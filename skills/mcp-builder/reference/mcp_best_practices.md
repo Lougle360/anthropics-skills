@@ -1,97 +1,97 @@
-# MCP Server Best Practices
+# MCP 服务器最佳实践
 
-## Quick Reference
+## 快速参考
 
-### Server Naming
-- **Python**: `{service}_mcp` (e.g., `slack_mcp`)
-- **Node/TypeScript**: `{service}-mcp-server` (e.g., `slack-mcp-server`)
+### 服务器命名
+- **Python**: `{service}_mcp` (例如，`slack_mcp`)
+- **Node/TypeScript**: `{service}-mcp-server` (例如，`slack-mcp-server`)
 
-### Tool Naming
-- Use snake_case with service prefix
-- Format: `{service}_{action}_{resource}`
-- Example: `slack_send_message`, `github_create_issue`
+### 工具命名
+- 使用 snake_case 并带服务前缀
+- 格式：`{service}_{action}_{resource}`
+- 示例：`slack_send_message`、`github_create_issue`
 
-### Response Formats
-- Support both JSON and Markdown formats
-- JSON for programmatic processing
-- Markdown for human readability
+### 响应格式
+- 同时支持 JSON 和 Markdown 格式
+- JSON 用于程序化处理
+- Markdown 用于人类可读性
 
-### Pagination
-- Always respect `limit` parameter
-- Return `has_more`, `next_offset`, `total_count`
-- Default to 20-50 items
+### 分页
+- 始终遵守 `limit` 参数
+- 返回 `has_more`、`next_offset`、`total_count`
+- 默认为 20-50 项
 
-### Transport
-- **Streamable HTTP**: For remote servers, multi-client scenarios
-- **stdio**: For local integrations, command-line tools
-- Avoid SSE (deprecated in favor of streamable HTTP)
-
----
-
-## Server Naming Conventions
-
-Follow these standardized naming patterns:
-
-**Python**: Use format `{service}_mcp` (lowercase with underscores)
-- Examples: `slack_mcp`, `github_mcp`, `jira_mcp`
-
-**Node/TypeScript**: Use format `{service}-mcp-server` (lowercase with hyphens)
-- Examples: `slack-mcp-server`, `github-mcp-server`, `jira-mcp-server`
-
-The name should be general, descriptive of the service being integrated, easy to infer from the task description, and without version numbers.
+### 传输方式
+- **Streamable HTTP**：用于远程服务器、多客户端场景
+- **stdio**：用于本地集成、命令行工具
+- 避免使用 SSE（已被弃用，改用 streamable HTTP）
 
 ---
 
-## Tool Naming and Design
+## 服务器命名约定
 
-### Tool Naming
+遵循以下标准化命名模式：
 
-1. **Use snake_case**: `search_users`, `create_project`, `get_channel_info`
-2. **Include service prefix**: Anticipate that your MCP server may be used alongside other MCP servers
-   - Use `slack_send_message` instead of just `send_message`
-   - Use `github_create_issue` instead of just `create_issue`
-3. **Be action-oriented**: Start with verbs (get, list, search, create, etc.)
-4. **Be specific**: Avoid generic names that could conflict with other servers
+**Python**：使用格式 `{service}_mcp`（小写加下划线）
+- 示例：`slack_mcp`、`github_mcp`、`jira_mcp`
 
-### Tool Design
+**Node/TypeScript**：使用格式 `{service}-mcp-server`（小写加连字符）
+- 示例：`slack-mcp-server`、`github-mcp-server`、`jira-mcp-server`
 
-- Tool descriptions must narrowly and unambiguously describe functionality
-- Descriptions must precisely match actual functionality
-- Provide tool annotations (readOnlyHint, destructiveHint, idempotentHint, openWorldHint)
-- Keep tool operations focused and atomic
+名称应该是通用的、描述所集成的服务、易于从任务描述中推断，并且不包含版本号。
 
 ---
 
-## Response Formats
+## 工具命名和设计
 
-All tools that return data should support multiple formats:
+### 工具命名
 
-### JSON Format (`response_format="json"`)
-- Machine-readable structured data
-- Include all available fields and metadata
-- Consistent field names and types
-- Use for programmatic processing
+1. **使用 snake_case**：`search_users`、`create_project`、`get_channel_info`
+2. **包含服务前缀**：预期你的 MCP 服务器可能与其他 MCP 服务器一起使用
+   - 使用 `slack_send_message` 而不是仅 `send_message`
+   - 使用 `github_create_issue` 而不是仅 `create_issue`
+3. **面向行动**：以动词开头（get、list、search、create 等）
+4. **具体明确**：避免可能与其他服务器冲突的通用名称
 
-### Markdown Format (`response_format="markdown"`, typically default)
-- Human-readable formatted text
-- Use headers, lists, and formatting for clarity
-- Convert timestamps to human-readable format
-- Show display names with IDs in parentheses
-- Omit verbose metadata
+### 工具设计
+
+- 工具描述必须狭义且明确地描述功能
+- 描述必须精确匹配实际功能
+- 提供工具注解（readOnlyHint、destructiveHint、idempotentHint、openWorldHint）
+- 保持工具操作专注和原子化
 
 ---
 
-## Pagination
+## 响应格式
 
-For tools that list resources:
+所有返回数据的工具都应支持多种格式：
 
-- **Always respect the `limit` parameter**
-- **Implement pagination**: Use `offset` or cursor-based pagination
-- **Return pagination metadata**: Include `has_more`, `next_offset`/`next_cursor`, `total_count`
-- **Never load all results into memory**: Especially important for large datasets
-- **Default to reasonable limits**: 20-50 items is typical
+### JSON 格式 (`response_format="json"`)
+- 机器可读的结构化数据
+- 包含所有可用字段和元数据
+- 一致的字段名称和类型
+- 用于程序化处理
 
-Example pagination response:
+### Markdown 格式 (`response_format="markdown"`，通常为默认)
+- 人类可读的格式化文本
+- 使用标题、列表和格式以提高清晰度
+- 将时间戳转换为人类可读格式
+- 显示名称时在括号中附带 ID
+- 省略冗长的元数据
+
+---
+
+## 分页
+
+对于列出资源的工具：
+
+- **始终遵守 `limit` 参数**
+- **实现分页**：使用 `offset` 或基于游标的分页
+- **返回分页元数据**：包括 `has_more`、`next_offset`/`next_cursor`、`total_count`
+- **永远不要将所有结果加载到内存中**：对于大型数据集尤其重要
+- **默认为合理限制**：通常为 20-50 项
+
+分页响应示例：
 ```json
 {
   "total": 150,
@@ -105,112 +105,112 @@ Example pagination response:
 
 ---
 
-## Transport Options
+## 传输选项
 
 ### Streamable HTTP
 
-**Best for**: Remote servers, web services, multi-client scenarios
+**最适合**：远程服务器、Web 服务、多客户端场景
 
-**Characteristics**:
-- Bidirectional communication over HTTP
-- Supports multiple simultaneous clients
-- Can be deployed as a web service
-- Enables server-to-client notifications
+**特点**：
+- 通过 HTTP 进行双向通信
+- 支持多个同时连接的客户端
+- 可以部署为 Web 服务
+- 支持服务器到客户端的通知
 
-**Use when**:
-- Serving multiple clients simultaneously
-- Deploying as a cloud service
-- Integration with web applications
+**使用场景**：
+- 同时为多个客户端提供服务
+- 部署为云服务
+- 与 Web 应用程序集成
 
 ### stdio
 
-**Best for**: Local integrations, command-line tools
+**最适合**：本地集成、命令行工具
 
-**Characteristics**:
-- Standard input/output stream communication
-- Simple setup, no network configuration needed
-- Runs as a subprocess of the client
+**特点**：
+- 标准输入/输出流通信
+- 设置简单，无需网络配置
+- 作为客户端的子进程运行
 
-**Use when**:
-- Building tools for local development environments
-- Integrating with desktop applications
-- Single-user, single-session scenarios
+**使用场景**：
+- 为本地开发环境构建工具
+- 与桌面应用程序集成
+- 单用户、单会话场景
 
-**Note**: stdio servers should NOT log to stdout (use stderr for logging)
+**注意**：stdio 服务器不应记录到 stdout（使用 stderr 进行日志记录）
 
-### Transport Selection
+### 传输方式选择
 
-| Criterion | stdio | Streamable HTTP |
+| 标准 | stdio | Streamable HTTP |
 |-----------|-------|-----------------|
-| **Deployment** | Local | Remote |
-| **Clients** | Single | Multiple |
-| **Complexity** | Low | Medium |
-| **Real-time** | No | Yes |
+| **部署** | 本地 | 远程 |
+| **客户端** | 单个 | 多个 |
+| **复杂性** | 低 | 中等 |
+| **实时性** | 否 | 是 |
 
 ---
 
-## Security Best Practices
+## 安全最佳实践
 
-### Authentication and Authorization
+### 身份验证和授权
 
-**OAuth 2.1**:
-- Use secure OAuth 2.1 with certificates from recognized authorities
-- Validate access tokens before processing requests
-- Only accept tokens specifically intended for your server
+**OAuth 2.1**：
+- 使用来自认可机构的证书进行安全的 OAuth 2.1
+- 在处理请求之前验证访问令牌
+- 仅接受专门用于你的服务器的令牌
 
-**API Keys**:
-- Store API keys in environment variables, never in code
-- Validate keys on server startup
-- Provide clear error messages when authentication fails
+**API 密钥**：
+- 将 API 密钥存储在环境变量中，永远不要存储在代码中
+- 在服务器启动时验证密钥
+- 当身份验证失败时提供清晰的错误消息
 
-### Input Validation
+### 输入验证
 
-- Sanitize file paths to prevent directory traversal
-- Validate URLs and external identifiers
-- Check parameter sizes and ranges
-- Prevent command injection in system calls
-- Use schema validation (Pydantic/Zod) for all inputs
+- 清理文件路径以防止目录遍历
+- 验证 URL 和外部标识符
+- 检查参数大小和范围
+- 防止系统调用中的命令注入
+- 对所有输入使用架构验证（Pydantic/Zod）
 
-### Error Handling
+### 错误处理
 
-- Don't expose internal errors to clients
-- Log security-relevant errors server-side
-- Provide helpful but not revealing error messages
-- Clean up resources after errors
+- 不要向客户端暴露内部错误
+- 在服务器端记录与安全相关的错误
+- 提供有用但不泄露信息的错误消息
+- 错误后清理资源
 
-### DNS Rebinding Protection
+### DNS 重绑定保护
 
-For streamable HTTP servers running locally:
-- Enable DNS rebinding protection
-- Validate the `Origin` header on all incoming connections
-- Bind to `127.0.0.1` rather than `0.0.0.0`
+对于本地运行的 streamable HTTP 服务器：
+- 启用 DNS 重绑定保护
+- 验证所有传入连接的 `Origin` 头
+- 绑定到 `127.0.0.1` 而不是 `0.0.0.0`
 
 ---
 
-## Tool Annotations
+## 工具注解
 
-Provide annotations to help clients understand tool behavior:
+提供注解以帮助客户端理解工具行为：
 
-| Annotation | Type | Default | Description |
+| 注解 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `readOnlyHint` | boolean | false | Tool does not modify its environment |
-| `destructiveHint` | boolean | true | Tool may perform destructive updates |
-| `idempotentHint` | boolean | false | Repeated calls with same args have no additional effect |
-| `openWorldHint` | boolean | true | Tool interacts with external entities |
+| `readOnlyHint` | boolean | false | 工具不修改其环境 |
+| `destructiveHint` | boolean | true | 工具可能执行破坏性更新 |
+| `idempotentHint` | boolean | false | 使用相同参数重复调用不会产生额外影响 |
+| `openWorldHint` | boolean | true | 工具与外部实体交互 |
 
-**Important**: Annotations are hints, not security guarantees. Clients should not make security-critical decisions based solely on annotations.
+**重要**：注解是提示，不是安全保证。客户端不应仅根据注解做出安全关键决策。
 
 ---
 
-## Error Handling
+## 错误处理
 
-- Use standard JSON-RPC error codes
-- Report tool errors within result objects (not protocol-level errors)
-- Provide helpful, specific error messages with suggested next steps
-- Don't expose internal implementation details
-- Clean up resources properly on errors
+- 使用标准 JSON-RPC 错误代码
+- 在结果对象中报告工具错误（而非协议级错误）
+- 提供有用的、具体的错误消息并建议后续步骤
+- 不要暴露内部实现细节
+- 在错误时正确清理资源
 
-Example error handling:
+错误处理示例：
 ```typescript
 try {
   const result = performOperation();
@@ -220,7 +220,7 @@ try {
     isError: true,
     content: [{
       type: "text",
-      text: `Error: ${error.message}. Try using filter='active_only' to reduce results.`
+      text: `错误：${error.message}。尝试使用 filter='active_only' 来减少结果。`
     }]
   };
 }
@@ -228,22 +228,22 @@ try {
 
 ---
 
-## Testing Requirements
+## 测试要求
 
-Comprehensive testing should cover:
+全面的测试应涵盖：
 
-- **Functional testing**: Verify correct execution with valid/invalid inputs
-- **Integration testing**: Test interaction with external systems
-- **Security testing**: Validate auth, input sanitization, rate limiting
-- **Performance testing**: Check behavior under load, timeouts
-- **Error handling**: Ensure proper error reporting and cleanup
+- **功能测试**：验证有效/无效输入的正确执行
+- **集成测试**：测试与外部系统的交互
+- **安全测试**：验证身份验证、输入清理、速率限制
+- **性能测试**：检查负载下的行为、超时
+- **错误处理**：确保正确的错误报告和清理
 
 ---
 
-## Documentation Requirements
+## 文档要求
 
-- Provide clear documentation of all tools and capabilities
-- Include working examples (at least 3 per major feature)
-- Document security considerations
-- Specify required permissions and access levels
-- Document rate limits and performance characteristics
+- 提供所有工具和功能的清晰文档
+- 包含实际示例（每个主要功能至少 3 个）
+- 记录安全考虑事项
+- 指定所需的权限和访问级别
+- 记录速率限制和性能特征
