@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段三作业 - 创意设计技能</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;
+        }
+        .container {
+            max-width: 1200px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px; position: relative;
+        }
+        .back-link {
+            position: absolute; top: 20px; left: 20px; color: white;
+            text-decoration: none; padding: 8px 15px;
+            background: rgba(255,255,255,0.2); border-radius: 25px;
+        }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .nav-tabs {
+            background: #f8f9fa; padding: 20px 40px; display: flex; gap: 20px;
+            border-bottom: 2px solid #e0e0e0; overflow-x: auto;
+        }
+        .nav-tab {
+            padding: 12px 30px; background: white; border: 2px solid #e0e0e0;
+            border-radius: 25px; cursor: pointer; font-weight: 500; white-space: nowrap;
+        }
+        .nav-tab:hover, .nav-tab.active {
+            background: #667eea; color: white; border-color: #667eea;
+        }
+        .content { padding: 40px; }
+        .theory-section, .exercise-section { display: none; }
+        .theory-section.active, .exercise-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .topic-card {
+            background: #f8f9fa; padding: 30px; border-radius: 15px;
+            margin-bottom: 30px; border-left: 5px solid #667eea;
+        }
+        .topic-card h3 { color: #667eea; margin-bottom: 20px; font-size: 1.6em; }
+        .topic-content {
+            background: white; padding: 25px; border-radius: 10px;
+            border: 1px solid #e0e0e0; margin-bottom: 20px;
+        }
+        .topic-content h4 { color: #555; margin-bottom: 15px; font-size: 1.3em; }
+        .exercise-card {
+            background: white; padding: 30px; border-radius: 15px;
+            margin-bottom: 30px; border: 2px solid #e0e0e0;
+        }
+        .exercise-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .exercise-number {
+            background: #667eea; color: white; width: 50px; height: 50px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5em; font-weight: bold; margin-right: 20px;
+        }
+        .footer {
+            background: #f8f9fa; padding: 30px 40px; text-align: center;
+            border-top: 2px solid #e0e0e0; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .footer-link {
+            padding: 12px 30px; background: #667eea; color: white;
+            text-decoration: none; border-radius: 25px; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段三：创意设计技能探索</h1>
+            <div class="subtitle">算法艺术 • 画布设计 • 品牌指南 • 主题</div>
+        </header>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('theory', this)">📖 理论知识</div>
+            <div class="nav-tab" onclick="showSection('exercises', this)">💻 实践作业</div>
+        </div>
+
+        <div class="content">
+            <div id="theory" class="theory-section active">
+                <div class="topic-card">
+                    <h3>1. p5.js 渲染原理与算法艺术</h3>
+                    <div class="topic-content">
+                        <h4>p5.js 基础架构</h4>
+                        <p>p5.js 是一个用于创意编程的 JavaScript 库，提供：</p>
+                        <ul>
+                            <li><strong>setup()</strong>：初始化函数，运行一次</li>
+                            <li><strong>draw()</strong>：绘制循环，默认 60fps</li>
+                            <li><strong>画布</strong>：创建图形的绘图区域</li>
+                            <li><strong>坐标系</strong>：左上角为(0,0)，x向右增，y向下增</li>
+                        </ul>
+                        <h4>种子随机性算法</h4>
+                        <p>使用种子值确保可重现性：</p>
+                        <ul>
+                            <li>相同种子→相同输出</li>
+                            <li>便于调试和版本控制</li>
+                            <li>常用库：Simplex Noise、Perlin Noise</li>
+                        </ul>
+                        <h4>粒子系统动力学</h4>
+                        <ul>
+                            <li><strong>粒子</strong>：位置、速度、加速度、大小、颜色</li>
+                            <li><strong>力</strong>：重力、摩擦力、风力、吸引力</li>
+                            <li><strong>交互</strong>：鼠标影响、粒子间碰撞</li>
+                            <li><strong>场</strong>：力场影响粒子运动（流场）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>2. 图像处理与设计理论</h3>
+                    <div class="topic-content">
+                        <h4>色彩理论</h4>
+                        <ul>
+                            <li><strong>色彩空间</strong>：RGB（屏幕）、CMYK（打印）、HSV/HSB（直观）</li>
+                            <li><strong>色彩和谐</strong>：互补、类似、三色、分裂互补</li>
+                            <li><strong>色彩温度</strong>：暖色（红、橙、黄）vs 冷色（蓝、绿、紫）</li>
+                            <li><strong>色彩对比</strong>：明度、色相、饱和度对比</li>
+                        </ul>
+                        <h4>设计构图原则</h4>
+                        <ul>
+                            <li><strong>三分法</strong>：将画面分为3x3网格，主体放在交点</li>
+                            <li><strong>黄金比例</strong>：1:1.618 的比例关系</li>
+                            <li><strong>视觉流</strong>：引导观众视线的元素排列</li>
+                            <li><strong>平衡</strong>：视觉重量的对称或不对称平衡</li>
+                            <li><strong>留白</strong>：负空间的重要性</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>3. 品牌识别与主题系统</h3>
+                    <div class="topic-content">
+                        <h4>品牌识别系统</h4>
+                        <ul>
+                            <li><strong>标志</strong>：主要标识符，简洁易识别</li>
+                            <li><strong>色彩</strong>：主色、辅助色、强调色的定义</li>
+                            <li><strong>字体</strong>：标题字体、正文字体、代码字体</li>
+                            <li><strong>语调</strong>：一致的沟通风格</li>
+                        </ul>
+                        <h4>主题系统设计</h4>
+                        <ul>
+                            <li><strong>主题变量</strong>：颜色、字体、间距、圆角</li>
+                            <li><strong>主题继承</strong>：基础主题→派生主题</li>
+                            <li><strong>主题切换</strong>：动态改变界面外观</li>
+                            <li><strong>一致性</strong>：保持设计语言统一</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="exercises" class="exercise-section">
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">1</div>
+                        <div class="exercise-title">创建 p5.js 算法艺术</div>
+                    </div>
+                    <div class="topic-content">
+                        <h4>任务步骤</h4>
+                        <ol>
+                            <li>选择一个算法主题（如粒子系统、流场、分形）</li>
+                            <li>编写 p5.js 草图代码</li>
+                            <li>添加参数控制（滑块、按钮）</li>
+                            <li>实现种子随机性</li>
+                            <li>创建 HTML 查看器文件</li>
+                            <li>测试不同的参数组合</li>
+                        </ol>
+                        <h4>验收标准</h4>
+                        <ul>
+                            <li>代码可运行，无明显错误</li>
+                            <li>实现种子随机性，相同种子产生相同输出</li>
+                            <li>至少有3个可调参数</li>
+                            <li>视觉效果有艺术价值</li>
+                            <li>包含清晰的代码注释</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">2</div>
+                        <div class="exercise-title">设计信息图海报</div>
+                    </div>
+                    <div class="topic-content">
+                        <h4>任务步骤</h4>
+                        <ol>
+                            <li>选择数据主题（如人口统计、环境数据）</li>
+                            <li>研究数据并确定关键信息</li>
+                            <li>设计海报布局（使用网格系统）</li>
+                            <li>选择和谐的色彩方案</li>
+                            <li>创建数据可视化元素（图表、图标）</li>
+                            <li>添加标题、说明和数据来源</li>
+                            <li>应用一致的字体和样式</li>
+                        </ol>
+                        <h4>验收标准</h4>
+                        <ul>
+                            <li>信息清晰易懂</li>
+                            <li>视觉层次分明</li>
+                            <li>色彩和谐统一</li>
+                            <li>文本可读性良好</li>
+                            <li>包含完整的数据来源</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">3</div>
+                        <div class="exercise-title">品牌设计实践</div>
+                    </div>
+                    <div class="topic-content">
+                        <h4>任务步骤</h4>
+                        <ol>
+                            <li>研究品牌指南中的色彩和字体规范</li>
+                            <li>创建一套品牌元素（名片、信头、海报）</li>
+                            <li>严格应用品牌色彩</li>
+                            <li>使用指定的字体系统</li>
+                            <li>保持一致的留白和间距</li>
+                            <li>创建品牌样式指南文档</li>
+                        </ol>
+                        <h4>验收标准</h4>
+                        <ul>
+                            <li>完全符合品牌色彩规范</li>
+                            <li>正确使用指定的字体</li>
+                            <li>所有元素视觉一致</li>
+                            <li>样式指南完整清晰</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">4</div>
+                        <div class="exercise-title">主题应用与创建</div>
+                    </div>
+                    <div class="topic-content">
+                        <h4>任务步骤</h4>
+                        <ol>
+                            <li>选择一个主题作为基础（如 Aurora、Ocean）</li>
+                            <li>分析主题的色彩和字体</li>
+                            <li>创建自定义主题变体（修改部分元素）</li>
+                            <li>应用主题到不同的内容类型</li>
+                            <li>测试主题的可读性和对比度</li>
+                            <li>创建主题展示文档</li>
+                        </ol>
+                        <h4>验收标准</h4>
+                        <ul>
+                            <li>主题色彩和谐统一</li>
+                            <li>字体配对合理</li>
+                            <li>所有内容可读性强</li>
+                            <li>主题展示完整</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="phase2.html" class="footer-link">← 阶段二</a>
+            <a href="phase4.html" class="footer-link">阶段四 →</a>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId, tab) {
+            document.querySelectorAll('.theory-section, .exercise-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            tab.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段二操作手册 - 文档处理</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;
+        }
+        .container {
+            max-width: 1200px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px; position: relative;
+        }
+        .back-link {
+            position: absolute; top: 20px; left: 20px; color: white;
+            text-decoration: none; padding: 8px 15px;
+            background: rgba(255,255,255,0.2); border-radius: 25px;
+        }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .manual-section { margin-bottom: 50px; }
+        .section-title {
+            font-size: 2em; color: #667eea; margin-bottom: 30px;
+            padding-bottom: 10px; border-bottom: 3px solid #667eea;
+        }
+        .subsection { margin-bottom: 30px; }
+        .subsection h3 {
+            font-size: 1.5em; color: #555; margin-bottom: 20px;
+            padding-left: 15px; border-left: 5px solid #667eea;
+        }
+        .topic-block {
+            background: #f8f9fa; padding: 25px; border-radius: 10px;
+            margin-bottom: 20px; border-left: 4px solid #667eea;
+        }
+        .topic-block h4 { color: #667eea; margin-bottom: 15px; font-size: 1.3em; }
+        .topic-block p { margin-bottom: 15px; }
+        .topic-block ul { margin-left: 30px; margin-bottom: 15px; }
+        .code-block {
+            background: #f5f5f5; padding: 20px; border-radius: 10px;
+            font-family: 'Courier New', monospace; margin: 15px 0;
+            overflow-x: auto; border: 1px solid #ddd;
+        }
+        .info-box {
+            background: #e7f3ff; padding: 20px; border-radius: 10px;
+            border-left: 5px solid #007bff; margin: 20px 0;
+        }
+        .guide-section {
+            background: white; padding: 30px; border-radius: 15px;
+            margin-bottom: 30px; border: 2px solid #e0e0e0;
+        }
+        .guide-section h4 {
+            color: #667eea; margin-bottom: 20px; font-size: 1.4em;
+        }
+        .step-list { list-style: none; padding: 0; }
+        .step-list li {
+            padding: 15px 0; padding-left: 50px; position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .step-list li:before {
+            content: attr(data-number); position: absolute; left: 10px; top: 15px;
+            background: #667eea; color: white; width: 30px; height: 30px;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; font-size: 0.9em;
+        }
+        footer {
+            background: #f8f9fa; padding: 30px 40px; text-align: center;
+            border-top: 2px solid #e0e0e0; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .footer-link {
+            padding: 12px 30px; background: #667eea; color: white;
+            text-decoration: none; border-radius: 25px; font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .footer-link:hover { background: #5568d3; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段二操作手册</h1>
+            <div class="subtitle">文档处理技能详解与操作指南</div>
+        </header>
+        <div class="content">
+            <div class="manual-section">
+                <h2 class="section-title">第一部分：深度知识点</h2>
+
+                <div class="subsection">
+                    <h3>Excel 核心技术</h3>
+                    <div class="topic-block">
+                        <h4>pandas 数据分析工作流</h4>
+                        <div class="code-block">
+import pandas as pd
+
+# 读取 Excel
+df = pd.read_excel('file.xlsx')
+all_sheets = pd.read_excel('file.xlsx', sheet_name=None)
+
+# 数据清洗
+df = df.dropna()
+df['column'] = df['column'].astype(float)
+
+# 数据分析
+df.describe()
+df.groupby('category').sum()
+
+# 数据透视表
+pivot = pd.pivot_table(df, values='amount',
+                      index='category',
+                      columns='month',
+                      aggfunc='sum')
+
+# 写回 Excel
+pivot.to_excel('summary.xlsx')
+                        </div>
+                    </div>
+
+                    <div class="topic-block">
+                        <h4>Excel 公式最佳实践</h4>
+                        <ul>
+                            <li><strong>避免循环引用</strong>：公式不应直接或间接引用自身</li>
+                            <li><strong>使用错误处理</strong>：IFERROR、IFNA 处理潜在错误</li>
+                            <li><strong>优化性能</strong>：避免在大型表格中使用易失性函数（NOW、RAND）</li>
+                            <li><strong>命名范围</strong>：使用有意义的名称代替单元格地址</li>
+                        </ul>
+                        <div class="info-box">
+                            <strong>关键原则：</strong>始终将假设放在单独区域，使用绝对引用确保一致性，使用相对引用便于复制公式。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Word 核心技术</h3>
+                    <div class="topic-block">
+                        <h4>docx-js 创建文档工作流</h4>
+                        <div class="code-block">
+const { Document, Packer, Paragraph, TextRun, HeadingLevel } = require('docx');
+
+const doc = new Document({
+    sections: [{
+        properties: {},
+        children: [
+            new Paragraph({
+                text: "文档标题",
+                heading: HeadingLevel.HEADING_1,
+            }),
+            new Paragraph({
+                children: [
+                    new TextRun({
+                        text: "这是正文文本，",
+                        bold: true,
+                    }),
+                    new TextRun({
+                        text: "这是普通文本",
+                    }),
+                ],
+            }),
+        ],
+    }],
+});
+
+Packer.toBuffer(doc).then(buffer => {
+    fs.writeFileSync("document.docx", buffer);
+});
+                        </div>
+                    </div>
+
+                    <div class="topic-block">
+                        <h4>红线工作流批处理策略</h4>
+                        <ul>
+                            <li>将相关更改分组为 3-10 个更改的批次</li>
+                            <li>每批次实现后在 Word 中测试跟踪更改</li>
+                            <li>使用 <code>&lt;w:ins&gt;</code> 和 <code>&lt;w:del&gt;</code> 标记</li>
+                            <li>保持更改的系统性和一致性</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>PDF 核心技术</h3>
+                    <div class="topic-block">
+                        <h4>PDF 处理 Python 库对比</h4>
+                        <table style="width:100%; border-collapse: collapse;">
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 10px; text-align: left;">库</th>
+                                <th style="padding: 10px; text-align: left;">用途</th>
+                                <th style="padding: 10px; text-align: left;">优势</th>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">pypdf</td>
+                                <td style="padding: 10px;">基本操作（合并、拆分、旋转）</td>
+                                <td style="padding: 10px;">轻量、快速、无依赖</td>
+                            </tr>
+                            <tr style="background: #f8f9fa; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">pdfplumber</td>
+                                <td style="padding: 10px;">文本和表格提取</td>
+                                <td style="padding: 10px;">精准、保留布局</td>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">reportlab</td>
+                                <td style="padding: 10px;">创建新 PDF</td>
+                                <td style="padding: 10px;">功能强大、完全控制</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="topic-block">
+                        <h4>PDF 表单填写工作流</h4>
+                        <div class="code-block">
+import pandas as pd
+
+# 读取表单字段（使用 pdfplumber 或类似工具）
+# 假设我们有一个字段列表
+form_fields = {
+    "姓名": "张三",
+    "邮箱": "zhangsan@example.com",
+    "日期": "2025-01-14"
+}
+
+# 使用 PyPDF2 填写表单
+from PyPDF2 import PdfReader, PdfWriter
+
+reader = PdfReader("form.pdf")
+writer = PdfWriter()
+
+# 填充表单字段
+for page in reader.pages:
+    if '/Annots' in page:
+        writer.add_page(page)
+
+# 更新表单字段
+writer.update_page_form_field_values(
+    writer.pages[0], form_fields
+)
+
+# 保存填写后的 PDF
+with open("filled_form.pdf", "wb") as output_file:
+    writer.write(output_file)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>PowerPoint 核心技术</h3>
+                    <div class="topic-block">
+                        <h4>HTML 到 PPTX 转换映射表</h4>
+                        <table style="width:100%; border-collapse: collapse;">
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 10px; text-align: left;">HTML 元素</th>
+                                <th style="padding: 10px; text-align: left;">PPTX 元素</th>
+                                <th style="padding: 10px; text-align: left;">注意事项</th>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">&lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;</td>
+                                <td style="padding: 10px;">标题幻灯片或标题文本框</td>
+                                <td style="padding: 10px;">可能创建新幻灯片</td>
+                            </tr>
+                            <tr style="background: #f8f9fa; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">&lt;p&gt;</td>
+                                <td style="padding: 10px;">段落文本框</td>
+                                <td style="padding: 10px;">保留基本格式</td>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">&lt;ul&gt;, &lt;ol&gt;</td>
+                                <td style="padding: 10px;">项目符号列表</td>
+                                <td style="padding: 10px;">保持缩进层次</td>
+                            </tr>
+                            <tr style="background: #f8f9fa; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">&lt;table&gt;</td>
+                                <td style="padding: 10px;">PowerPoint 表格</td>
+                                <td style="padding: 10px;">转换 CSS 样式到表格格式</td>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">&lt;img&gt;</td>
+                                <td style="padding: 10px;">图片形状</td>
+                                <td style="padding: 10px;">需要嵌入图片文件</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="topic-block">
+                        <h4>演示文稿设计最佳实践</h4>
+                        <ul>
+                            <li><strong>每幻灯片一个主题</strong>：避免信息过载</li>
+                            <li><strong>使用一致的字体和颜色</strong>：应用主题或母版幻灯片</li>
+                            <li><strong>简洁的文本</li>：每行不超过 6 个单词，每张幻灯片不超过 6 行</li>
+                            <li><strong>高质量的图像</li>：使用高分辨率但适当压缩</li>
+                            <li><strong>合理的动画</li>：增强而非分散注意力</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manual-section">
+                <h2 class="section-title">第二部分：操作指南</h2>
+
+                <div class="guide-section">
+                    <h4>1. 创建财务报表的完整步骤</h4>
+                    <ul class="step-list">
+                        <li data-number="1">规划报表结构：确定需要的工作表（假设、计算、汇总）</li>
+                        <li data-number="2">创建假设工作表：
+                            <ul style="margin-top: 10px;">
+                                <li>列出所有假设（收入增长率、成本率等）</li>
+                                <li>使用蓝色文本标记假设单元格</li>
+                                <li>为每个假设添加说明性注释</li>
+                            </ul>
+                        </li>
+                        <li data-number="3">创建计算工作表：
+                            <ul style="margin-top: 10px;">
+                                <li>使用公式引用假设单元格</li>
+                                <li>所有计算使用黑色文本</li>
+                                <li>应用绝对引用（$）固定假设引用</li>
+                                <li>使用相对引用便于复制公式</li>
+                            </ul>
+                        </li>
+                        <li data-number="4">创建汇总工作表：
+                            <ul style="margin-top: 10px;">
+                                <li>汇总关键指标（收入、利润、利润率）</li>
+                                <li>创建数据透视表分析趋势</li>
+                                <li>生成可视化图表</li>
+                            </ul>
+                        </li>
+                        <li data-number="5">应用格式化：
+                            <ul style="margin-top: 10px;">
+                                <li>货币格式：$#,##0（在标题中指定单位）</li>
+                                <li>百分比格式：0.0%</li>
+                                <li>零值格式：使用自定义格式显示为 "-"</li>
+                                <li>负数格式：使用括号而非减号</li>
+                            </ul>
+                        </li>
+                        <li data-number="6">验证和测试：
+                            <ul style="margin-top: 10px;">
+                                <li>检查公式错误（#REF!、#DIV/0!、#VALUE! 等）</li>
+                                <li>测试边缘情况（零值、负数、空单元格）</li>
+                                <li>验证循环引用</li>
+                                <li>修改假设并验证自动重新计算</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h4>2. Word 文档批量生成</h4>
+                    <ul class="step-list">
+                        <li data-number="1">设计模板结构：
+                            <ul style="margin-top: 10px;">
+                                <li>定义标准文档结构（标题、章节、页眉页脚）</li>
+                                <li>设置占位符（{{placeholder}} 格式）</li>
+                                <li>定义样式（标题、正文、引用等）</li>
+                            </ul>
+                        </li>
+                        <li data-number="2">准备数据源：
+                            <ul style="margin-top: 10px;">
+                                <li>创建 CSV 或 JSON 文件</li>
+                                <li>包含所有占位符的对应值</li>
+                                <li>验证数据完整性</li>
+                            </ul>
+                        </li>
+                        <li data-number="3">使用 Claude 生成：
+                            <ul style="margin-top: 10px;">
+                                <li>激活 docx 技能</li>
+                                <li>提供模板和数据源</li>
+                                <li>指定输出位置和命名规则</li>
+                                <li>验证所有文档生成成功</li>
+                            </ul>
+                        </li>
+                        <li data-number="4">质量检查：
+                            <ul style="margin-top: 10px;">
+                                <li>抽样检查文档格式</li>
+                                <li>验证占位符正确替换</li>
+                                <li>确认样式一致性</li>
+                                <li>检查页码和目录</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h4>3. PDF 处理常见操作</h4>
+                    <ul class="step-list">
+                        <li data-number="1">PDF 合并：
+                            <ul style="margin-top: 10px;">
+                                <li>使用 pypdf 的 PdfWriter</li>
+                                <li>按顺序添加所有页面</li>
+                                <li>保留原始页面的元数据</li>
+                                <li>输出到新文件</li>
+                            </ul>
+                        </li>
+                        <li data-number="2">PDF 拆分：
+                            <ul style="margin-top: 10px;">
+                                <li>读取源 PDF</li>
+                                <li>创建新的 PdfWriter 实例</li>
+                                <li>按范围提取页面并保存</li>
+                            </ul>
+                        </li>
+                        <li data-number="3">文本提取：
+                            <ul style="margin-top: 10px;">
+                                <li>选择合适的库（pdfplumber 精准，pypdf 快速）</li>
+                                <li>逐页提取文本</li>
+                                <li>处理编码问题</li>
+                                <li>保存为文本文件或结构化格式</li>
+                            </ul>
+                        </li>
+                        <li data-number="4">表单填写：
+                            <ul style="margin-top: 10px;">
+                                <li>读取 PDF 表单字段</li>
+                                <li>准备字段值数据</li>
+                                <li>使用 PyPDF2 或类似库填写</li>
+                                <li>验证填写结果</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="phase1.html" class="footer-link">← 阶段一</a>
+            <a href="../exercises/phase2.html" class="footer-link">返回作业 →</a>
+        </footer>
+    </div>
+</body>
+</html>

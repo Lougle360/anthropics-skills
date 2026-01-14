@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段四作业 - Web开发技能</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; position: relative; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; padding: 8px 15px; background: rgba(255,255,255,0.2); border-radius: 25px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .nav-tabs { background: #f8f9fa; padding: 20px 40px; display: flex; gap: 20px; border-bottom: 2px solid #e0e0e0; overflow-x: auto; }
+        .nav-tab { padding: 12px 30px; background: white; border: 2px solid #e0e0e0; border-radius: 25px; cursor: pointer; font-weight: 500; white-space: nowrap; }
+        .nav-tab:hover, .nav-tab.active { background: #667eea; color: white; border-color: #667eea; }
+        .content { padding: 40px; }
+        .theory-section, .exercise-section { display: none; }
+        .theory-section.active, .exercise-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .topic-card { background: #f8f9fa; padding: 30px; border-radius: 15px; margin-bottom: 30px; border-left: 5px solid #667eea; }
+        .topic-card h3 { color: #667eea; margin-bottom: 20px; font-size: 1.6em; }
+        .topic-content { background: white; padding: 25px; border-radius: 10px; border: 1px solid #e0e0e0; margin-bottom: 20px; }
+        .exercise-card { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; border: 2px solid #e0e0e0; }
+        .exercise-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .exercise-number { background: #667eea; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em; font-weight: bold; margin-right: 20px; }
+        .footer { background: #f8f9fa; padding: 30px 40px; text-align: center; border-top: 2px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
+        .footer-link { padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段四：Web 开发与测试技能</h1>
+            <div class="subtitle">web-artifacts-builder • webapp-testing • frontend-design</div>
+        </header>
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('theory', this)">📖 理论知识</div>
+            <div class="nav-tab" onclick="showSection('exercises', this)">💻 实践作业</div>
+        </div>
+        <div class="content">
+            <div id="theory" class="theory-section active">
+                <div class="topic-card"><h3>1. React 组件化与 TypeScript</h3><div class="topic-content"><h4>React 组件化原理</h4><p>React 使用组件化架构：UI 拆分为独立、可复用的部分。每个组件管理自己的状态和渲染。</p><ul><li>函数组件 vs 类组件</li><li>Props（属性）传递</li><li>State（状态）管理</li><li>生命周期和 Hooks</li></ul><h4>TypeScript 类型系统</h4><p>TypeScript 添加静态类型检查：类型安全、更好的 IDE 支持、自文档化代码。</p></div></div>
+                <div class="topic-card"><h3>2. Playwright 自动化测试</h3><div class="topic-content"><h4>Playwright 架构</h4><p>现代 Web 自动化测试框架：跨浏览器支持、快速可靠、强大 API。</p><ul><li>Page 对象：浏览器页面的封装</li><li>ElementHandle：DOM 元素的引用</li><li>Locator：元素定位器</li><li>Assertions：断言和验证</li></ul><h4>页面对象模式</h4><p>将页面操作封装为对象：提高可维护性、减少代码重复、便于定位选择器更改。</p></div></div>
+                <div class="topic-card"><h3>3. 前端设计原则</h3><div class="topic-content"><h4>响应式设计</h4><ul><li>流式网格系统</li><li>弹性图片和媒体</li><li>CSS 媒体查询</li><li>移动优先方法</li></ul><h4>无障碍访问（WCAG）</h4><ul><li>语义化 HTML</li><li>ARIA 属性</li><li>键盘导航</li><li>屏幕阅读器支持</li></ul></div></div>
+            </div>
+            <div id="exercises" class="exercise-section">
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">1</div><div class="exercise-title">React 数据可视化仪表板</div></div><div class="topic-content"><h4>任务</h4><ol><li>创建 React 应用框架</li><li>设计仪表板布局（网格系统）</li><li>实现数据可视化组件（图表、表格）</li><li>添加交互功能（筛选、排序）</li><li>应用统一的主题和样式</li></ol><h4>验收标准</h4><ul><li>使用 TypeScript</li><li>组件模块化设计</li><li>响应式布局</li><li>无 TypeScript 错误</li></ul></div></div>
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">2</div><div class="exercise-title">Playwright 测试套件</div></div><div class="topic-content"><h4>任务</h4><ol><li>选择要测试的 Web 应用</li><li>编写测试用例（登录、导航、表单提交）</li><li>使用页面对象模式组织测试</li><li>添加断言验证功能</li><li>配置 CI/CD 自动运行测试</li></ol><h4>验收标准</h4><ul><li>至少 5 个测试用例</li><li>所有测试通过</li><li>测试可重复运行</li></ul></div></div>
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">3</div><div class="exercise-title">响应式页面设计</div></div><div class="topic-content"><h4>任务</h4><ol><li>设计页面布局（桌面、平板、手机）</li><li>使用 Flexbox 和 CSS Grid</li><li>添加动画和过渡效果</li><li>确保无障碍访问</li><li>跨浏览器测试</li></ol><h4>验收标准</h4><ul><li>在三种设备尺寸下正常显示</li><li>流畅的动画和过渡</li><li>WCAG 2.1 AA 级别合规</li></ul></div></div>
+            </div>
+        </div>
+        <footer>
+            <a href="phase3.html" class="footer-link">← 阶段三</a>
+            <a href="phase5.html" class="footer-link">阶段五 →</a>
+        </footer>
+    </div>
+    <script>
+        function showSection(id, tab) {
+            document.querySelectorAll('.theory-section, .exercise-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            tab.classList.add('active');
+        }
+    </script>
+</body>
+</html>

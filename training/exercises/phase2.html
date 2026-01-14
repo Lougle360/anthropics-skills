@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段二作业 - 文档处理技能精通</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .nav-tabs {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        .nav-tab {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .nav-tab:hover, .nav-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .content {
+            padding: 40px;
+        }
+        .theory-section, .exercise-section {
+            display: none;
+        }
+        .theory-section.active, .exercise-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .topic-card, .exercise-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        .topic-card h3, .exercise-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+        }
+        .topic-content, .exercise-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .topic-content h4, .exercise-content h4 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .topic-content p, .exercise-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        .topic-content ul, .exercise-content ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        .topic-content li, .exercise-content li {
+            margin-bottom: 10px;
+        }
+        .code-block {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin: 15px 0;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+            margin: 20px 0;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .exercise-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .exercise-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+        .exercise-steps {
+            margin-top: 20px;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .acceptance-criteria {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+        }
+        .acceptance-criteria h4 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+        .tips-box {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #ffc107;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-link {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .footer-link:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            .nav-tabs { flex-direction: column; }
+            .exercise-header { flex-direction: column; align-items: flex-start; }
+            .exercise-number { margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段二：文档处理技能精通</h1>
+            <div class="subtitle">xlsx • docx • pdf • pptx</div>
+        </header>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('theory', this)">📖 理论知识</div>
+            <div class="nav-tab" onclick="showSection('exercises', this)">💻 实践作业</div>
+        </div>
+
+        <div class="content">
+            <!-- 理论知识部分 -->
+            <div id="theory" class="theory-section active">
+                <div class="topic-card">
+                    <h3>1. Excel (xlsx) - 电子表格处理</h3>
+                    <div class="topic-content">
+                        <h4>Excel 文件格式（OOXML）</h4>
+                        <p>Excel 使用 Office Open XML (OOXML) 格式，本质上是包含 XML 文件和其他资源的 ZIP 存档。关键组件：</p>
+                        <ul>
+                            <li><strong>工作表 (Sheets)</strong>：存储单元格数据的 XML 文件</li>
+                            <li><strong>共享字符串</strong>：优化文本存储</li>
+                            <li><strong>样式表</strong>：定义单元格格式</li>
+                            <li><strong>公式</strong>：存储计算公式而非计算结果</li>
+                        </ul>
+
+                        <h4>公式引擎和引用类型</h4>
+                        <ul>
+                            <li><strong>相对引用</strong>：A1、B2，随位置变化</li>
+                            <li><strong>绝对引用</strong>：$A$1、$B$2，固定位置</li>
+                            <li><strong>混合引用</strong>：$A1、A$2，部分固定</li>
+                            <li><strong>命名范围</strong>：使用有意义的名称代替单元格地址</li>
+                        </ul>
+
+                        <h4>财务建模标准</h4>
+                        <p><strong>颜色编码：</strong></p>
+                        <ul>
+                            <li>🔵 蓝色文本：硬编码输入</li>
+                            <li>⚫ 黑色文本：所有公式和计算</li>
+                            <li>🟢 绿色文本：同工作表链接</li>
+                            <li>🔴 红色文本：外部文件链接</li>
+                            <li>🟡 黄色背景：关键假设或需更新</li>
+                        </ul>
+
+                        <h4>数据分析原理</h4>
+                        <ul>
+                            <li><strong>数据透视表</strong>：快速汇总和分析大量数据</li>
+                            <li><strong>图表</strong>：可视化数据趋势和模式</li>
+                            <li><strong>公式</strong>：VLOOKUP、INDEX/MATCH、SUMIF、COUNTIF</li>
+                            <li><strong>数组公式</strong>：处理复杂计算</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <strong>核心原则：</strong>始终使用公式而非硬编码值。使用单元格引用使电子表格保持动态和可更新。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>2. Word (docx) - 文档处理</h3>
+                    <div class="topic-content">
+                        <h4>Word 文档结构</h4>
+                        <p>DOCX 是包含 XML 文件的 ZIP 存档。关键文件：</p>
+                        <ul>
+                            <li><code>word/document.xml</code>：主文档内容</li>
+                            <li><code>word/styles.xml</code>：样式定义</li>
+                            <li><code>word/comments.xml</code>：注释</li>
+                            <li><code>word/media/</code>：嵌入的图像和媒体</li>
+                        </ul>
+
+                        <h4>红线工作流原理</h4>
+                        <p>红线工作流使用跟踪更改标记来管理文档修订：</p>
+                        <ul>
+                            <li><code>&lt;w:ins&gt;</code>：插入标记，显示新增内容</li>
+                            <li><code>&lt;w:del&gt;</code>：删除标记，显示删除内容</li>
+                            <li>支持接受/拒绝更改</li>
+                            <li>保留完整编辑历史</li>
+                        </ul>
+
+                        <h4>样式和格式系统</h4>
+                        <ul>
+                            <li><strong>段落样式</strong>：定义标题、正文等格式</li>
+                            <li><strong>字符样式</strong>：定义字体、颜色等</li>
+                            <li><strong>编号</strong>：自动编号系统</li>
+                            <li><strong>目录</strong>：自动生成文档大纲</li>
+                        </ul>
+
+                        <h4>文档版本控制</h4>
+                        <p>使用跟踪更改而非创建多个版本：</p>
+                        <ul>
+                            <li>所有修改在同一个文件中</li>
+                            <li>可以查看修改历史</li>
+                            <li>便于合并多个编辑者的更改</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>3. PDF - 文档处理</h3>
+                    <div class="topic-content">
+                        <h4>PDF 内部结构</h4>
+                        <p>PDF (Portable Document Format) 是一种基于 PostScript 的格式：</p>
+                        <ul>
+                            <li><strong>对象模型</strong>：页面、字体、图像等独立对象</li>
+                            <li><strong>内容流</strong>：描述页面外观的指令序列</li>
+                            <li><strong>交叉引用表 (XRef)</strong>：连接对象的索引</li>
+                            <li><strong>加密</strong>：支持密码和权限保护</li>
+                        </ul>
+
+                        <h4>文本提取原理</h4>
+                        <ul>
+                            <li>PDF 存储的是绘图指令而非文本</li>
+                            <li>需要逆向工程提取可读文本</li>
+                            <li>挑战：布局、字体编码、图像中的文本</li>
+                            <li>工具：pdfplumber、pypdf、PyPDF2</li>
+                        </ul>
+
+                        <h4>表单字段处理</h4>
+                        <ul>
+                            <li><strong>AcroForm</strong>：传统 PDF 表单格式</li>
+                            <li><strong>XFA</strong>：XML Forms Architecture（较新）</li>
+                            <li>字段类型：文本框、复选框、单选按钮、下拉列表</li>
+                            <li>可以编程方式填写和提取数据</li>
+                        </ul>
+
+                        <h4>加密和安全</h4>
+                        <ul>
+                            <li><strong>用户密码</strong>：打开文档所需</li>
+                            <li><strong>所有者密码</strong>：编辑权限控制</li>
+                            <li><strong>权限</strong>：打印、复制、修改限制</li>
+                            <li><strong>数字签名</strong>：验证文档完整性</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>4. PowerPoint (pptx) - 演示文稿处理</h3>
+                    <div class="topic-content">
+                        <h4>演示文稿结构</h4>
+                        <p>PPTX 也是 OOXML 格式，包含：</p>
+                        <ul>
+                            <li><code>ppt/slides/slideN.xml</code>：每张幻灯片的 XML</li>
+                            <li><code>ppt/slideLayouts/</code>：幻灯片布局定义</li>
+                            <li><code>ppt/slideMasters/</code>：母版幻灯片</li>
+                            <li><code>ppt/theme/</code>：主题定义</li>
+                        </ul>
+
+                        <h4>幻灯片布局系统</h4>
+                        <ul>
+                            <li><strong>母版幻灯片</strong>：定义全局样式和占位符</li>
+                            <li><strong>布局</strong>：从母版继承的具体排列</li>
+                            <li><strong>占位符</strong>：标题、内容、图片等位置标记</li>
+                            <li>支持多种预设布局（标题、两列、图片等）</li>
+                        </ul>
+
+                        <h4>HTML 转 PPTX 转换逻辑</h4>
+                        <p>转换流程：</p>
+                        <ol style="margin-left: 30px;">
+                            <li>解析 HTML 结构（标题、段落、列表、图像）</li>
+                            <li>映射 HTML 元素到 PPTX 元素</li>
+                            <li>创建对应的幻灯片</li>
+                            <li>应用样式和格式</li>
+                            <li>生成 PPTX 文件</li>
+                        </ol>
+
+                        <h4>常见转换挑战</h4>
+                        <ul>
+                            <li>CSS 样式到 PowerPoint 格式的映射</li>
+                            <li>响应式布局到固定尺寸的转换</li>
+                            <li>Web 字体到系统字体的回退</li>
+                            <li>复杂布局的保持</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实践作业部分 -->
+            <div id="exercises" class="exercise-section">
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">1</div>
+                        <div class="exercise-title">创建带公式和格式的财务报表</div>
+                    </div>
+                    <div class="exercise-content">
+                        <h4>🎯 学习目标</h4>
+                        <ul>
+                            <li>掌握 Excel 财务模型的颜色编码标准</li>
+                            <li>学会使用公式而非硬编码值</li>
+                            <li>应用财务建模的最佳实践</li>
+                            <li>创建零错误的电子表格</li>
+                        </ul>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：创建基础收入模型</div>
+                                <p>创建一个简单的收入预测模型：</p>
+                                <ul>
+                                    <li>设置 5 年的收入预测</li>
+                                    <li>使用假设单元格存放增长率</li>
+                                    <li>应用蓝色文本到假设单元格</li>
+                                    <li>使用黑色文本显示计算值</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 2：添加财务指标</div>
+                                <p>计算以下指标：</p>
+                                <ul>
+                                    <li>总收入（使用 SUM 公式）</li>
+                                    <li>同比增长率（使用相对引用）</li>
+                                    <li>利润率（使用绝对引用）</li>
+                                    <li>所有计算使用黑色文本</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 3：应用格式化</div>
+                                <p>格式化单元格：</p>
+                                <ul>
+                                    <li>货币格式：$#,##0</li>
+                                    <li>百分比格式：0.0%</li>
+                                    <li>零值显示为 "-"</li>
+                                    <li>负数使用括号</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 4：验证公式</div>
+                                <p>检查所有公式：</p>
+                                <ul>
+                                    <li>确保零公式错误（#REF!、#DIV/0! 等）</li>
+                                    <li>测试边缘情况（零值、负数）</li>
+                                    <li>验证没有循环引用</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="acceptance-criteria">
+                            <h4>✅ 验收标准</h4>
+                            <ul>
+                                <li>使用正确的颜色编码（蓝色、黑色）</li>
+                                <li>所有计算使用公式，无硬编码值</li>
+                                <li>财务格式符合标准</li>
+                                <li>零公式错误</li>
+                                <li>能够通过修改增长率自动重新计算</li>
+                            </ul>
+                        </div>
+
+                        <div class="tips-box">
+                            <h4>💡 提示</h4>
+                            <p>参考 ../skills/xlsx/SKILL.md 获取详细的财务建模标准和最佳实践。始终使用单元格引用使模型保持动态。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 更多作业的简化版本 -->
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">2</div>
+                        <div class="exercise-title">文档模板创建和批量生成</div>
+                    </div>
+                    <div class="exercise-content">
+                        <h4>🎯 学习目标</h4>
+                        <ul>
+                            <li>掌握 Word 文档的创建方法</li>
+                            <li>学会使用模板和占位符</li>
+                            <li>批量生成个性化文档</li>
+                            <li>应用一致的格式和样式</li>
+                        </ul>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：创建文档模板</div>
+                                <p>设计一个合同或报告模板：</p>
+                                <ul>
+                                    <li>定义标题、正文、页眉页脚</li>
+                                    <li>设置占位符（如 {{姓名}}、{{日期}}）</li>
+                                    <li>应用一致的样式和格式</li>
+                                    <li>保存为模板文件</li>
+                                </ul>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">步骤 2：批量生成文档</div>
+                                <p>为多个客户/实例生成文档：</p>
+                                <ul>
+                                    <li>准备数据源（CSV 或 JSON）</li>
+                                    <li>使用脚本或 Claude 批量替换占位符</li>
+                                    <li>生成多个个性化文档</li>
+                                    <li>验证格式一致性</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">3</div>
+                        <div class="exercise-title">红线工作流实践</div>
+                    </div>
+                    <div class="exercise-content">
+                        <h4>🎯 学习目标</h4>
+                        <ul>
+                            <li>理解红线工作流的概念和优势</li>
+                            <li>使用跟踪更改进行文档编辑</li>
+                            <li>接受和拒绝更改</li>
+                            <li>协作编辑实践</li>
+                        </ul>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：启用跟踪更改</div>
+                                <p>在 Word 文档中：</p>
+                                <ul>
+                                    <li>启用跟踪更改功能</li>
+                                    <li>进行多个编辑（插入、删除、修改）</li>
+                                    <li>观察不同更改类型的标记</li>
+                                </ul>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">步骤 2：审查和处理更改</div>
+                                <ul>
+                                    <li>逐个审查所有更改</li>
+                                    <li>接受有效的更改</li>
+                                    <li>拒绝不需要的更改</li>
+                                    <li>保留完整的修订历史</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">4</div>
+                        <div class="exercise-title">PDF 合并和内容提取</div>
+                    </div>
+                    <div class="exercise-content">
+                        <h4>🎯 学习目标</h4>
+                        <ul>
+                            <li>掌握 PDF 的基本操作</li>
+                            <li>合并多个 PDF 文件</li>
+                            <li>提取 PDF 文本和表格</li>
+                            <li>处理 PDF 元数据</li>
+                        </ul>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：PDF 合并</div>
+                                <p>使用 Python 脚本：</p>
+                                <ul>
+                                    <li>读取多个 PDF 文件</li>
+                                    <li>合并为一个新 PDF</li>
+                                    <li>保持原有顺序和格式</li>
+                                    <li>保存合并后的文件</li>
+                                </ul>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">步骤 2：内容提取</div>
+                                <ul>
+                                    <li>提取 PDF 的所有文本</li>
+                                    <li>提取表格数据</li>
+                                    <li>读取 PDF 元数据（标题、作者、创建日期）</li>
+                                    <li>保存提取的内容</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">5</div>
+                        <div class="exercise-title">从 HTML 创建演示文稿</div>
+                    </div>
+                    <div class="exercise-content">
+                        <h4>🎯 学习目标</h4>
+                        <ul>
+                            <li>理解 HTML 到 PPTX 的转换流程</li>
+                            <li>创建结构化的 HTML 内容</li>
+                            <li>使用 html2pptx 工具</li>
+                            <li>生成 PowerPoint 演示文稿</li>
+                        </ul>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：准备 HTML 内容</div>
+                                <p>创建 HTML 文档：</p>
+                                <ul>
+                                    <li>使用适当的标题层次（h1、h2、h3）</li>
+                                    <li>组织内容为逻辑部分</li>
+                                    <li>添加列表、表格和图像</li>
+                                    <li>应用基本 CSS 样式</li>
+                                </ul>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">步骤 2：转换为 PPTX</div>
+                                <ul>
+                                    <li>使用 Claude 和 pptx 技能</li>
+                                    <li>指定 HTML 文件路径</li>
+                                    <li>生成 PPTX 文件</li>
+                                    <li>检查转换结果和格式</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="phase1.html" class="footer-link">← 阶段一</a>
+            <a href="phase3.html" class="footer-link">阶段三 →</a>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId, tab) {
+            document.querySelectorAll('.theory-section, .exercise-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            tab.classList.add('active');
+        }
+    </script>
+</body>
+</html>

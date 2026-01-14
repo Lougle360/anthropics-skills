@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阶段一作业 - 基础认知</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .nav-tab {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover {
+            border-color: #667eea;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .theory-section {
+            display: none;
+        }
+
+        .theory-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topic-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .topic-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+        }
+
+        .topic-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .topic-content h4 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .topic-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .topic-content ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .topic-content li {
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin: 15px 0;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .exercise-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .exercise-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .exercise-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .exercise-content {
+            padding-left: 70px;
+        }
+
+        .exercise-objectives {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-objectives h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .exercise-objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exercise-objectives li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .exercise-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 10px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .exercise-steps {
+            margin-top: 20px;
+        }
+
+        .exercise-steps h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .acceptance-criteria {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #28a745;
+        }
+
+        .acceptance-criteria h4 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .acceptance-criteria ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .acceptance-criteria li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .acceptance-criteria li:before {
+            content: "✔";
+            position: absolute;
+            left: 10px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .tips-box {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .tips-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-link {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .footer-link.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .exercise-content {
+                padding-left: 0;
+            }
+
+            .exercise-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .exercise-number {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段一：基础认知与概念理解</h1>
+            <div class="subtitle">理论知识 + 实践练习</div>
+        </header>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('theory')">📖 理论知识</div>
+            <div class="nav-tab" onclick="showSection('exercises')">💻 实践作业</div>
+        </div>
+
+        <div class="content">
+            <!-- 理论知识部分 -->
+            <div id="theory" class="theory-section active">
+                <div class="topic-card">
+                    <h3>1. Skills 系统架构和工作原理</h3>
+                    <div class="topic-content">
+                        <h4>什么是 Skills？</h4>
+                        <p>Skills（技能）是包含指令、脚本和资源的文件夹，Claude 可以动态加载这些内容以提升在特定任务上的表现。技能以可重复的方式教会 Claude 如何完成特定任务，无论是使用公司品牌指南创建文档、使用组织的特定工作流程分析数据，还是自动化个人任务。</p>
+
+                        <h4>系统架构</h4>
+                        <p>Skills 系统由以下几个核心组件组成：</p>
+                        <ul>
+                            <li><strong>SKILL.md 文件</strong>：每个技能必须包含这个文件，定义技能的元数据和指令</li>
+                            <li><strong>YAML Frontmatter</strong>：技能的元数据部分，包含 name、description、license 等字段</li>
+                            <li><strong>Markdown 内容</strong>：实际的指令、示例和指南</li>
+                            <li><strong>辅助资源</strong>：可选的脚本、模板、参考文档等</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <strong>关键理解：</strong>Skills 不是插件或扩展，而是通过标准化的指令集来引导 Claude 的行为和输出，让 Claude 在特定领域表现得更专业、更一致。
+                        </div>
+
+                        <h4>工作原理</h4>
+                        <p>当用户激活一个技能时，Claude 会：</p>
+                        <ul>
+                            <li>读取 SKILL.md 文件</li>
+                            <li>解析 YAML frontmatter 获取元数据</li>
+                            <li>加载 Markdown 内容中的指令和指南</li>
+                            <li>根据这些指令调整其响应策略和行为</li>
+                            <li>在对话过程中持续参考这些指令</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>2. YAML Frontmatter 规范</h3>
+                    <div class="topic-content">
+                        <h4>必需字段</h4>
+                        <p>每个技能的 SKILL.md 文件必须包含以下必需字段：</p>
+                        <div class="code-block">
+---
+name: my-skill-name
+description: 技能的完整描述，说明功能和何时使用
+---
+                        </div>
+                        <ul>
+                            <li><strong>name</strong>：技能的唯一标识符，小写，使用连字符分隔单词</li>
+                            <li><strong>description</strong>：技能功能的完整描述，包括使用时机和场景</li>
+                        </ul>
+
+                        <h4>可选字段</h4>
+                        <div class="code-block">
+---
+license: Apache 2.0
+allowed-tools: ["read_file", "write", "grep"]
+metadata:
+  author: "技能作者"
+  version: "1.0.0"
+  tags: ["标签1", "标签2"]
+---
+                        </div>
+                        <ul>
+                            <li><strong>license</strong>：技能的许可证类型</li>
+                            <li><strong>allowed-tools</strong>：预批准的工具列表</li>
+                            <li><strong>metadata</strong>：额外的元数据，可以包含作者、版本、标签等</li>
+                        </ul>
+
+                        <div class="warning-box">
+                            <strong>注意：</strong>name 字段必须是唯一的，不能包含空格或特殊字符，只能使用小写字母、数字和连字符。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>3. 技能生命周期</h3>
+                    <div class="topic-content">
+                        <h4>创建阶段</h4>
+                        <ul>
+                            <li>定义技能的目标和范围</li>
+                            <li>编写 YAML frontmatter</li>
+                            <li>创建 Markdown 指令内容</li>
+                            <li>添加必要的辅助资源和脚本</li>
+                            <li>测试和优化技能</li>
+                        </ul>
+
+                        <h4>部署阶段</h4>
+                        <ul>
+                            <li>Claude Code：通过插件市场安装</li>
+                            <li>Claude.ai：在技能管理中上传</li>
+                            <li>Claude API：通过 API 上传技能配置</li>
+                        </ul>
+
+                        <h4>使用阶段</h4>
+                        <ul>
+                            <li>用户激活技能</li>
+                            <li>Claude 加载技能指令</li>
+                            <li>Claude 根据指令调整行为</li>
+                            <li>完成特定任务</li>
+                        </ul>
+
+                        <h4>维护阶段</h4>
+                        <ul>
+                            <li>收集用户反馈</li>
+                            <li>优化指令和指南</li>
+                            <li>更新资源和新功能</li>
+                            <li>发布新版本</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="topic-card">
+                    <h3>4. 集成方式</h3>
+                    <div class="topic-content">
+                        <h4>Claude Code</h4>
+                        <p>Claude Code 支持 Skill 插件市场，可以通过以下方式安装：</p>
+                        <div class="code-block">
+/plugin marketplace add anthropics/skills
+/plugin install document-skills@anthropic-agent-skills
+                        </div>
+                        <p>安装后，在对话中提及技能名称即可激活。</p>
+
+                        <h4>Claude.ai</h4>
+                        <p>Claude.ai 的付费计划用户可以直接使用和管理技能：</p>
+                        <ul>
+                            <li>在技能管理中上传自定义技能</li>
+                            <li>从市场浏览和安装技能</li>
+                            <li>在对话中选择要使用的技能</li>
+                        </ul>
+
+                        <h4>Claude API</h4>
+                        <p>通过 API 可以编程方式使用技能：</p>
+                        <div class="code-block">
+POST /v1/messages
+{
+  "model": "claude-sonnet-4-20250514",
+  "max_tokens": 1024,
+  "skills": ["skill-name-1", "skill-name-2"],
+  "messages": [...]
+}
+                        </div>
+
+                        <div class="info-box">
+                            <strong>最佳实践：</strong>根据使用场景选择合适的集成方式。日常开发使用 Claude Code，团队协作使用 Claude.ai，自动化任务使用 Claude API。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实践作业部分 -->
+            <div id="exercises" class="theory-section">
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">1</div>
+                        <div class="exercise-title">理论测试 + 环境配置实践</div>
+                    </div>
+                    <div class="exercise-content">
+                        <div class="exercise-objectives">
+                            <h4>🎯 学习目标</h4>
+                            <ul>
+                                <li>理解 Skills 系统的核心概念和工作原理</li>
+                                <li>掌握 YAML frontmatter 的语法和规范</li>
+                                <li>配置 Claude Code 的技能环境</li>
+                                <li>学会安装和使用技能</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：理论测试（书面）</div>
+                                <p>在不查阅资料的情况下，回答以下问题：</p>
+                                <ul>
+                                    <li>什么是 Skills？它有什么作用？</li>
+                                    <li>SKILL.md 文件必须包含哪些字段？</li>
+                                    <li>Skills 系统的工作原理是什么？</li>
+                                    <li>技能的生命周期包含哪些阶段？</li>
+                                    <li>Claude Code、Claude.ai 和 API 如何使用技能？</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 2：查阅资料验证答案</div>
+                                <p>阅读以下文档，验证你的答案并补充遗漏的知识点：</p>
+                                <ul>
+                                    <li><a href="../README.md" style="color: #667eea;">README.md</a> - 项目主文档</li>
+                                    <li><a href="../skills-intro.md" style="color: #667eea;">skills-intro.md</a> - 技能介绍</li>
+                                    <li><a href="../Docs/目录结构说明.md" style="color: #667eea;">目录结构说明.md</a> - 结构详解</li>
+                                    <li><a href="../spec/agent-skills-spec.md" style="color: #667eea;">agent-skills-spec.md</a> - 技能规范</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 3：配置 Claude Code 环境</div>
+                                <p>在 Claude Code 中完成以下配置：</p>
+                                <ul>
+                                    <li>打开 Claude Code</li>
+                                    <li>运行命令：<code>/plugin marketplace add anthropics/skills</code></li>
+                                    <li>安装示例技能：<code>/plugin install example-skills@anthropic-agent-skills</code></li>
+                                    <li>验证安装成功</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 4：测试已安装的技能</div>
+                                <p>选择一个已安装的技能，向 Claude Code 提出相关请求，观察技能如何影响响应。</p>
+                            </div>
+                        </div>
+
+                        <div class="acceptance-criteria">
+                            <h4>✅ 验收标准</h4>
+                            <ul>
+                                <li>理论测试答案准确率 80% 以上</li>
+                                <li>成功配置 Claude Code 技能环境</li>
+                                <li>至少安装并测试了 2 个不同的技能</li>
+                                <li>能够解释技能如何影响 Claude 的响应</li>
+                            </ul>
+                        </div>
+
+                        <div class="tips-box">
+                            <h4>💡 提示</h4>
+                            <p>如果遇到配置问题，检查 Claude Code 的版本是否支持技能功能。建议使用最新版本。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">2</div>
+                        <div class="exercise-title">技能结构分析 + 模板实践</div>
+                    </div>
+                    <div class="exercise-content">
+                        <div class="exercise-objectives">
+                            <h4>🎯 学习目标</h4>
+                            <ul>
+                                <li>深入理解技能的文件结构</li>
+                                <li>分析不同类型技能的组织方式</li>
+                                <li>掌握技能模板的使用</li>
+                                <li>学会创建基础的技能文件</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：分析 3 个不同类型的技能</div>
+                                <p>选择以下技能，分析它们的文件结构和内容组织：</p>
+                                <ul>
+                                    <li><strong>文档类</strong>：<a href="../skills/xlsx/SKILL.md" style="color: #667eea;">xlsx</a></li>
+                                    <li><strong>创意类</strong>：<a href="../skills/algorithmic-art/SKILL.md" style="color: #667eea;">algorithmic-art</a></li>
+                                    <li><strong>工具类</strong>：<a href="../skills/skill-creator/SKILL.md" style="color: #667eea;">skill-creator</a></li>
+                                </ul>
+                                <p>记录每个技能的：</p>
+                                <ul>
+                                    <li>YAML frontmatter 字段</li>
+                                    <li>文件和目录结构</li>
+                                    <li>指令组织方式</li>
+                                    <li>辅助资源和脚本</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 2：阅读技能模板</div>
+                                <p>仔细阅读 <a href="../template/SKILL.md" style="color: #667eea;">template/SKILL.md</a>，理解标准的技能格式和最佳实践。</p>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 3：创建基础技能文件</div>
+                                <p>基于模板，创建一个简单的技能：</p>
+                                <ul>
+                                    <li>定义技能名称和描述</li>
+                                    <li>编写基本的指令内容</li>
+                                    <li>添加 2-3 个使用示例</li>
+                                    <li>定义使用指南</li>
+                                </ul>
+                                <p>示例主题：简单的文本格式化技能或代码注释生成技能。</p>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 4：对比分析</div>
+                                <p>将你创建的技能与分析的 3 个示例技能进行对比，找出差异和改进点。</p>
+                            </div>
+                        </div>
+
+                        <div class="acceptance-criteria">
+                            <h4>✅ 验收标准</h4>
+                            <ul>
+                                <li>完成 3 个技能的结构分析报告</li>
+                                <li>理解技能模板的所有组成部分</li>
+                                <li>创建一个符合规范的 SKILL.md 文件</li>
+                                <li>能够解释不同类型技能的设计差异</li>
+                            </ul>
+                        </div>
+
+                        <div class="tips-box">
+                            <h4>💡 提示</h4>
+                            <p>注意观察不同技能在指令深度、资源复杂度和组织方式上的差异。文档类技能通常更详细，创意类技能更注重示例和模板。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-number">3</div>
+                        <div class="exercise-title">技能安装和使用实践</div>
+                    </div>
+                    <div class="exercise-content">
+                        <div class="exercise-objectives">
+                            <h4>🎯 学习目标</h4>
+                            <ul>
+                                <li>掌握在不同平台安装技能的方法</li>
+                                <li>学会激活和使用技能</li>
+                                <li>理解技能的激活时机</li>
+                                <li>能够调试技能使用问题</li>
+                            </ul>
+                        </div>
+
+                        <div class="exercise-steps">
+                            <h4>📝 任务步骤</h4>
+                            <div class="step">
+                                <div class="step-title">步骤 1：在 Claude Code 中使用技能</div>
+                                <p>完成以下任务：</p>
+                                <ul>
+                                    <li>安装 xlsx 技能</li>
+                                    <li>激活该技能</li>
+                                    <li>向 Claude Code 提出创建 Excel 文件的请求</li>
+                                    <li>观察响应是否符合技能要求</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 2：在 Claude.ai 中测试技能</div>
+                                <p>如果你有 Claude.ai 的付费账户：</p>
+                                <ul>
+                                    <li>上传自定义技能（使用练习 2 创建的文件）</li>
+                                    <li>创建新对话并激活该技能</li>
+                                    <li>测试技能是否按预期工作</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 3：技能切换实践</div>
+                                <p>在不同技能间切换，完成多个任务：</p>
+                                <ul>
+                                    <li>使用 algorithmic-art 技能创建生成艺术</li>
+                                    <li>切换到 frontend-design 技能设计页面</li>
+                                    <li>对比不同技能的响应风格</li>
+                                </ul>
+                            </div>
+
+                            <div class="step">
+                                <div class="step-title">步骤 4：常见问题排查</div>
+                                <p>尝试模拟并解决以下问题：</p>
+                                <ul>
+                                    <li>技能未激活的解决方法</li>
+                                    <li>技能指令冲突的处理</li>
+                                    <li>技能不响应该如何调试</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="acceptance-criteria">
+                            <h4>✅ 验收标准</h4>
+                            <ul>
+                                <li>在至少 2 个平台成功使用技能</li>
+                                <li>熟练掌握技能的激活和切换</li>
+                                <li>能够独立解决常见技能使用问题</li>
+                                <li>理解技能的选择原则和最佳实践</li>
+                            </ul>
+                        </div>
+
+                        <div class="tips-box">
+                            <h4>💡 提示</h4>
+                            <p>技能的激活通常需要在请求中明确提及或通过界面选择。观察 Claude 的响应可以帮助你判断技能是否正确激活。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="../index.html" class="footer-link">← 返回首页</a>
+            <a href="phase2.html" class="footer-link">阶段二 →</a>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // 隐藏所有部分
+            document.querySelectorAll('.theory-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // 移除所有标签的 active 类
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // 显示选中的部分
+            document.getElementById(sectionId).classList.add('active');
+
+            // 激活对应的标签
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

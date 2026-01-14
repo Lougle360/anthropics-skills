@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>阶段五作业 - 工具开发技能</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; position: relative; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; padding: 8px 15px; background: rgba(255,255,255,0.2); border-radius: 25px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .nav-tabs { background: #f8f9fa; padding: 20px 40px; display: flex; gap: 20px; border-bottom: 2px solid #e0e0e0; }
+        .nav-tab { padding: 12px 30px; background: white; border: 2px solid #e0e0e0; border-radius: 25px; cursor: pointer; font-weight: 500; }
+        .nav-tab:hover, .nav-tab.active { background: #667eea; color: white; border-color: #667eea; }
+        .content { padding: 40px; }
+        .theory-section, .exercise-section { display: none; }
+        .theory-section.active, .exercise-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .topic-card { background: #f8f9fa; padding: 30px; border-radius: 15px; margin-bottom: 30px; border-left: 5px solid #667eea; }
+        .exercise-card { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; border: 2px solid #e0e0e0; }
+        .exercise-number { background: #667eea; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em; font-weight: bold; margin-right: 20px; }
+        .footer { background: #f8f9fa; padding: 30px 40px; text-align: center; border-top: 2px solid #e0e0e0; display: flex; justify-content: space-between; }
+        .footer-link { padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段五：工具开发技能深入</h1>
+            <div class="subtitle">mcp-builder • skill-creator • slack-gif-creator</div>
+        </header>
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('theory', this)">📖 理论知识</div>
+            <div class="nav-tab" onclick="showSection('exercises', this)">💻 实践作业</div>
+        </div>
+        <div class="content">
+            <div id="theory" class="theory-section active">
+                <div class="topic-card"><h3>1. MCP 协议与工具定义</h3><div class="topic-content"><h4>MCP 协议规范</h4><p>Model Context Protocol (MCP) 标准化模型与外部工具的通信。</p><ul><li>JSON-RPC 消息格式</li><li>工具定义和调用</li><li>资源读取和写入</li><li>服务器启动和关闭</li></ul><h4>工具定义</h4><p>每个工具包含：名称、描述、输入模式、输出模式。</p></div></div>
+                <div class="topic-card"><h3>2. 技能设计原则</h3><div class="topic-content"><h4>技能设计核心原则</h4><ul><li>简洁性：只包含必要的指令</li><li>适当的自由度：不过度限制 Claude</li><li>清晰的上下文：提供足够的背景信息</li><li>可测试性：可以验证技能效果</li></ul><h4>指令编写技巧</h4><p>使用示例、分步骤指导、明确预期输出、处理边缘情况。</p></div></div>
+                <div class="topic-card"><h3>3. GIF 编码与图像处理</h3><div class="topic-content"><h4>GIF 编码原理</h4><p>GIF 格式使用 LZW 压缩和调色板。关键技术点：</p><ul><li>颜色量化：将 RGB 减少到 256 色</li><li>帧差分：只存储变化的像素</li><li>优化策略：减少颜色数、降低帧率、减小尺寸</li></ul><h4>缓动函数</h4><p>控制动画过渡的数学函数：Linear、Ease-in、Ease-out、Bounce、Elastic。</p></div></div>
+            </div>
+            <div id="exercises" class="exercise-section">
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">1</div><div class="exercise-title">创建 MCP 服务器</div></div><div class="topic-content"><h4>任务</h4><ol><li>定义工具功能（如天气查询、数据检索）</li><li>实现 JSON-RPC 服务器</li><li>定义工具的输入输出模式</li><li>实现工具的业务逻辑</li><li>测试与 Claude 的集成</li></ol><h4>验收标准</h4><ul><li>工具可被 Claude 正确调用</li><li>输入输出符合规范</li><li>错误处理完善</li></ul></div></div>
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">2</div><div class="exercise-title">开发自定义技能</div></div><div class="topic-content"><h4>任务</h4><ol><li>确定技能目标和范围</li><li>编写 YAML frontmatter</li><li>创建详细的指令内容</li><li>添加示例和指南</li><li>测试和优化技能</li></ol><h4>验收标准</h4><ul><li>YAML 格式正确</li><li>指令清晰有效</li><li>至少包含 3 个示例</li><li>技能可被加载和使用</li></ul></div></div>
+                <div class="exercise-card"><div class="exercise-header"><div class="exercise-number">3</div><div class="exercise-title">创建动画 GIF</div></div><div class="topic-content"><h4>任务</h4><ol><li>设计动画概念和帧序列</li><li>使用 PIL 绘制每一帧</li><li>应用缓动函数</li><li>优化颜色和帧率</li><li>生成并测试 GIF</li></ol><h4>验收标准</h4><ul><li>动画流畅自然</li><li>文件大小合理（<1MB）</li><li>在 Slack 中正常显示</li></ul></div></div>
+            </div>
+        </div>
+        <footer>
+            <a href="phase4.html" class="footer-link">← 阶段四</a>
+            <a href="phase6.html" class="footer-link">阶段六 →</a>
+        </footer>
+    </div>
+    <script>
+        function showSection(id, tab) {
+            document.querySelectorAll('.theory-section, .exercise-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            tab.classList.add('active');
+        }
+    </script>
+</body>
+</html>

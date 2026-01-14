@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Skills 系统学习计划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .progress-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .section-toggle {
+            font-size: 2em;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .section-toggle.expanded {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            padding-left: 70px;
+        }
+
+        .section-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .overview {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .overview h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .learning-objectives {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .learning-objectives h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .learning-objectives ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .learning-objectives li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .learning-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 10px;
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .skill-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .skill-card.completed {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .skill-card.in-progress {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .skill-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .skill-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .practical-tasks {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #007bff;
+        }
+
+        .practical-tasks h3 {
+            color: #004085;
+            margin-bottom: 15px;
+        }
+
+        .task {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .task-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .task-description {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .resources {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .resources h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .resource-link {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            transition: color 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: #764ba2;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .difficulty.beginner {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty.intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty.advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+
+        .completion-badge {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+            animation: bounceIn 0.5s ease;
+            z-index: 1000;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .time-estimate {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .time-estimate:before {
+            content: "⏱️ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Claude Skills 系统学习计划</h1>
+            <p>从入门到精通，全面掌握 Anthropic Skills 系统</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-title">学习进度</div>
+            <div class="progress-container">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- 阶段一：基础认知 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">1</div>
+                    <div class="section-title">
+                        阶段一：基础认知与概念理解
+                        <span class="difficulty beginner">初级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>本阶段帮助你理解 Skills 系统的基本概念、工作原理和应用场景，为后续深入学习打下坚实基础。</p>
+                        <div class="time-estimate">预计学习时间：2-3天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>理解什么是 Skills 以及它如何扩展 Claude 的能力</li>
+                            <li>掌握技能的基本结构和工作机制</li>
+                            <li>了解 Skills 系统的应用场景和价值</li>
+                            <li>熟悉如何在 Claude 中使用和安装技能</li>
+                        </ul>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：阅读核心文档</div>
+                            <div class="task-description">
+                                阅读 README.md、skills-intro.md 和目录结构说明.md，理解项目整体架构
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：探索技能规范</div>
+                            <div class="task-description">
+                                阅读 spec/agent-skills-spec.md，理解技能的技术规范和要求
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 3：浏览技能模板</div>
+                            <div class="task-description">
+                                研究 template/SKILL.md，了解技能的标准格式
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="README.md" class="resource-link">README.md - 项目主文档</a>
+                        <a href="skills-intro.md" class="resource-link">skills-intro.md - 技能介绍</a>
+                        <a href="Docs/目录结构说明.md" class="resource-link">目录结构说明.md - 结构详解</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段二：文档处理技能 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">2</div>
+                    <div class="section-title">
+                        阶段二：文档处理技能精通
+                        <span class="difficulty intermediate">中级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>深入学习四大文档处理技能，掌握如何使用 Claude 处理 Word、Excel、PDF 和 PowerPoint 文档。</p>
+                        <div class="time-estimate">预计学习时间：5-7天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>掌握 Excel 数据处理、公式应用和自动化报告生成</li>
+                            <li>学会 Word 文档的创建、编辑和红线工作流</li>
+                            <li>理解 PDF 文档的合并、拆分、表单处理等操作</li>
+                            <li>掌握 PowerPoint 演示文稿的自动化创建和编辑</li>
+                        </ul>
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-card" onclick="markSkill(this, 'xlsx')">
+                            <div class="skill-title">📊 xlsx</div>
+                            <div class="skill-description">Excel 表格操作，公式、格式化、数据分析</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'docx')">
+                            <div class="skill-title">📄 docx</div>
+                            <div class="skill-description">Word 文档操作，红线工作流，内容提取</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'pdf')">
+                            <div class="skill-title">📑 pdf</div>
+                            <div class="skill-description">PDF 处理，合并拆分，表单提取</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'pptx')">
+                            <div class="skill-title">📽️ pptx</div>
+                            <div class="skill-description">PowerPoint 创建，HTML转PPTX</div>
+                        </div>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：Excel 自动化报表</div>
+                            <div class="task-description">
+                                使用 xlsx 技能创建一个包含公式和数据透视表的财务报表
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：Word 文档批量处理</div>
+                            <div class="task-description">
+                                使用 docx 技能创建文档模板并批量生成个性化文档
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 3：PDF 工作流</div>
+                            <div class="task-description">
+                                使用 pdf 技能实现文档合并、拆分和内容提取的完整流程
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 4：演示文稿自动化</div>
+                            <div class="task-description">
+                                使用 pptx 技能从 HTML 内容自动生成演示文稿
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="skills/xlsx/SKILL.md" class="resource-link">xlsx 技能文档</a>
+                        <a href="skills/docx/SKILL.md" class="resource-link">docx 技能文档</a>
+                        <a href="skills/pdf/SKILL.md" class="resource-link">pdf 技能文档</a>
+                        <a href="skills/pptx/SKILL.md" class="resource-link">pptx 技能文档</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段三：创意设计技能 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">3</div>
+                    <div class="section-title">
+                        阶段三：创意设计技能探索
+                        <span class="difficulty intermediate">中级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>探索创意设计领域的技能，学习如何使用 Claude 生成艺术作品、创建视觉设计和应用主题样式。</p>
+                        <div class="time-estimate">预计学习时间：4-6天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>掌握算法艺术生成的原理和技巧</li>
+                            <li>学习画布设计的视觉表达方法</li>
+                            <li>理解品牌指南的应用和品牌一致性</li>
+                            <li>掌握主题工厂的使用和自定义主题创建</li>
+                        </ul>
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-card" onclick="markSkill(this, 'algorithmic-art')">
+                            <div class="skill-title">🎨 algorithmic-art</div>
+                            <div class="skill-description">算法艺术生成，p5.js 可视化</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'canvas-design')">
+                            <div class="skill-title">🖼️ canvas-design</div>
+                            <div class="skill-description">画布设计，视觉艺术创作</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'brand-guidelines')">
+                            <div class="skill-title">✏️ brand-guidelines</div>
+                            <div class="skill-description">品牌指南应用，一致性设计</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'theme-factory')">
+                            <div class="skill-title">🎭 theme-factory</div>
+                            <div class="skill-description">主题工厂，预设主题应用</div>
+                        </div>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：生成算法艺术作品</div>
+                            <div class="task-description">
+                                使用 algorithmic-art 技能创建一个可交互的生成式艺术作品
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：设计信息图</div>
+                            <div class="task-description">
+                                使用 canvas-design 技能创建一张精美的信息图海报
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 3：品牌设计实践</div>
+                            <div class="task-description">
+                                使用 brand-guidelines 和 theme-factory 技能创建符合品牌规范的设计
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="skills/algorithmic-art/SKILL.md" class="resource-link">algorithmic-art 技能文档</a>
+                        <a href="skills/canvas-design/SKILL.md" class="resource-link">canvas-design 技能文档</a>
+                        <a href="skills/brand-guidelines/SKILL.md" class="resource-link">brand-guidelines 技能文档</a>
+                        <a href="skills/theme-factory/SKILL.md" class="resource-link">theme-factory 技能文档</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段四：Web 开发与测试 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">4</div>
+                    <div class="section-title">
+                        阶段四：Web 开发与测试技能
+                        <span class="difficulty intermediate">中级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>学习 Web 开发相关技能，掌握如何使用 Claude 构建、测试和优化 Web 应用。</p>
+                        <div class="time-estimate">预计学习时间：5-7天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>掌握 Web 构件的构建和部署流程</li>
+                            <li>学会使用 Playwright 进行自动化测试</li>
+                            <li>理解前端设计的最佳实践和 UI/UX 原则</li>
+                            <li>能够独立开发和测试 Web 应用</li>
+                        </ul>
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-card" onclick="markSkill(this, 'web-artifacts-builder')">
+                            <div class="skill-title">🏗️ web-artifacts-builder</div>
+                            <div class="skill-description">Web 构件构建，React + TypeScript</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'webapp-testing')">
+                            <div class="skill-title">🧪 webapp-testing</div>
+                            <div class="skill-description">Web 应用测试，Playwright 自动化</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'frontend-design')">
+                            <div class="skill-title">💻 frontend-design</div>
+                            <div class="skill-description">前端界面设计，UI/UX 最佳实践</div>
+                        </div>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：构建交互式 Web 构件</div>
+                            <div class="task-description">
+                                使用 web-artifacts-builder 技能创建一个复杂的数据可视化仪表板
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：自动化测试实施</div>
+                            <div class="task-description">
+                                使用 webapp-testing 技能为现有应用编写完整的自动化测试套件
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 3：前端界面设计</div>
+                            <div class="task-description">
+                                使用 frontend-design 技能创建一个生产级的 Web 应用界面
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="skills/web-artifacts-builder/SKILL.md" class="resource-link">web-artifacts-builder 技能文档</a>
+                        <a href="skills/webapp-testing/SKILL.md" class="resource-link">webapp-testing 技能文档</a>
+                        <a href="skills/frontend-design/SKILL.md" class="resource-link">frontend-design 技能文档</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段五：工具开发技能 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">5</div>
+                    <div class="section-title">
+                        阶段五：工具开发技能深入
+                        <span class="difficulty advanced">高级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>深入学习工具开发技能，掌握如何创建 MCP 服务器、自定义技能和开发专用工具。</p>
+                        <div class="time-estimate">预计学习时间：7-10天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>理解 MCP 协议和 MCP 服务器的构建原理</li>
+                            <li>掌握技能创建的完整流程和最佳实践</li>
+                            <li>学会开发专用工具和自动化脚本</li>
+                            <li>能够独立创建高质量的技能和工具</li>
+                        </ul>
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-card" onclick="markSkill(this, 'mcp-builder')">
+                            <div class="skill-title">🔧 mcp-builder</div>
+                            <div class="skill-description">MCP 服务器构建，扩展 Claude 功能</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'skill-creator')">
+                            <div class="skill-title">📋 skill-creator</div>
+                            <div class="skill-description">技能创建器，自定义技能开发</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'slack-gif-creator')">
+                            <div class="skill-title">🎬 slack-gif-creator</div>
+                            <div class="skill-description">Slack GIF 创建器，动画制作</div>
+                        </div>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：创建 MCP 服务器</div>
+                            <div class="task-description">
+                                使用 mcp-builder 技能创建一个自定义的 MCP 服务器，集成外部 API
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：开发自定义技能</div>
+                            <div class="task-description">
+                                使用 skill-creator 技能创建一个完整的自定义技能，包含脚本和文档
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 3：专用工具开发</div>
+                            <div class="task-description">
+                                参考其他技能，开发一个专用的自动化工具
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="skills/mcp-builder/SKILL.md" class="resource-link">mcp-builder 技能文档</a>
+                        <a href="skills/skill-creator/SKILL.md" class="resource-link">skill-creator 技能文档</a>
+                        <a href="skills/slack-gif-creator/SKILL.md" class="resource-link">slack-gif-creator 技能文档</a>
+                        <a href="spec/agent-skills-spec.md" class="resource-link">技能规范文档</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段六：团队协作技能 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">6</div>
+                    <div class="section-title">
+                        阶段六：团队协作与沟通技能
+                        <span class="difficulty intermediate">中级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>学习团队协作相关技能，掌握如何使用 Claude 改进文档协作和内部沟通流程。</p>
+                        <div class="time-estimate">预计学习时间：3-4天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>掌握结构化的文档协作工作流</li>
+                            <li>学会高效的内部沟通方法</li>
+                            <li>理解团队协作的最佳实践</li>
+                            <li>能够使用技能提升团队工作效率</li>
+                        </ul>
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-card" onclick="markSkill(this, 'doc-coauthoring')">
+                            <div class="skill-title">👥 doc-coauthoring</div>
+                            <div class="skill-description">文档协作，三阶段工作流</div>
+                        </div>
+                        <div class="skill-card" onclick="markSkill(this, 'internal-comms')">
+                            <div class="skill-title">📢 internal-comms</div>
+                            <div class="skill-description">内部沟通，沟通模板和最佳实践</div>
+                        </div>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 实践任务</h3>
+                        <div class="task">
+                            <div class="task-title">任务 1：协作文档创建</div>
+                            <div class="task-description">
+                                使用 doc-coauthoring 技能完成一个团队协作文档的创建和优化
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">任务 2：内部沟通实践</div>
+                            <div class="task-description">
+                                使用 internal-comms 技能创建多种类型的内部沟通文档
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="skills/doc-coauthoring/SKILL.md" class="resource-link">doc-coauthoring 技能文档</a>
+                        <a href="skills/internal-comms/SKILL.md" class="resource-link">internal-comms 技能文档</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段七：综合项目实战 -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <div class="section-number">7</div>
+                    <div class="section-title">
+                        阶段七：综合项目实战
+                        <span class="difficulty advanced">高级</span>
+                    </div>
+                    <div class="section-toggle">▼</div>
+                </div>
+                <div class="section-content">
+                    <div class="overview">
+                        <h3>📖 学习概述</h3>
+                        <p>通过完整的综合项目，整合所学技能，创建一个实际可用的解决方案。</p>
+                        <div class="time-estimate">预计学习时间：10-14天</div>
+                    </div>
+
+                    <div class="learning-objectives">
+                        <h3>🎯 学习目标</h3>
+                        <ul>
+                            <li>综合运用多个技能完成复杂项目</li>
+                            <li>掌握项目规划和执行的方法</li>
+                            <li>学会技能组合和集成技巧</li>
+                            <li>能够独立设计和实现完整解决方案</li>
+                        </ul>
+                    </div>
+
+                    <div class="practical-tasks">
+                        <h3>📝 综合项目选项（选择其一）</h3>
+                        <div class="task">
+                            <div class="task-title">项目 1：自动化办公系统</div>
+                            <div class="task-description">
+                                整合 xlsx、docx、pptx 技能，创建一个完整的自动化办公报表系统，包括数据收集、分析和报告生成
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">项目 2：Web 应用全流程开发</div>
+                            <div class="task-description">
+                                使用 web-artifacts-builder、frontend-design 和 webapp-testing 技能，从设计、开发到测试完整创建一个 Web 应用
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">项目 3：品牌营销内容生成系统</div>
+                            <div class="task-description">
+                                整合 brand-guidelines、theme-factory、algorithmic-art 等技能，创建自动化的品牌内容生成系统
+                            </div>
+                        </div>
+                        <div class="task">
+                            <div class="task-title">项目 4：自定义技能开发</div>
+                            <div class="task-description">
+                                使用 skill-creator 和 mcp-builder 技能，开发一个全新的自定义技能，解决特定业务问题
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources">
+                        <h3>📚 相关资源</h3>
+                        <a href="study/" class="resource-link">study/ - 学习资料和项目指南</a>
+                        <a href="template/SKILL.md" class="resource-link">技能模板</a>
+                        <a href="spec/agent-skills-spec.md" class="resource-link">技能规范</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>🎓 祝学习顺利！如有问题，随时询问你的 AI 助手</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">建议学习周期：4-6周（根据个人进度调整）</p>
+        </footer>
+    </div>
+
+    <div class="completion-badge" id="completionBadge">
+        🎉 恭喜完成全部学习！
+    </div>
+
+    <script>
+        // 跟踪完成的技能
+        let completedSkills = new Set();
+        const totalSkills = 16;
+
+        // 切换章节展开/折叠
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.section-toggle');
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                toggle.classList.remove('expanded');
+            } else {
+                content.classList.add('show');
+                toggle.classList.add('expanded');
+            }
+        }
+
+        // 标记技能完成状态
+        function markSkill(card, skillName) {
+            if (card.classList.contains('completed')) {
+                card.classList.remove('completed');
+                completedSkills.delete(skillName);
+            } else {
+                card.classList.add('completed');
+                card.classList.remove('in-progress');
+                completedSkills.add(skillName);
+            }
+
+            updateProgress();
+        }
+
+        // 标记技能为进行中
+        function markInProgress(card, skillName) {
+            if (!card.classList.contains('completed')) {
+                card.classList.add('in-progress');
+            }
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = (completedSkills.size / totalSkills) * 100;
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = Math.round(progress) + '%';
+
+            // 显示完成徽章
+            const badge = document.getElementById('completionBadge');
+            if (completedSkills.size === totalSkills) {
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            // 保存进度到本地存储
+            localStorage.setItem('completedSkills', JSON.stringify([...completedSkills]));
+        }
+
+        // 加载保存的进度
+        function loadProgress() {
+            const saved = localStorage.getItem('completedSkills');
+            if (saved) {
+                const skills = JSON.parse(saved);
+                skills.forEach(skillName => {
+                    completedSkills.add(skillName);
+                    const card = document.querySelector(`[onclick*="'${skillName}'"]`);
+                    if (card) {
+                        card.classList.add('completed');
+                    }
+                });
+                updateProgress();
+            }
+        }
+
+        // 页面加载时自动展开第一个章节
+        window.onload = function() {
+            const firstHeader = document.querySelector('.section-header');
+            if (firstHeader) {
+                toggleSection(firstHeader);
+            }
+            loadProgress();
+        };
+    </script>
+</body>
+</html>
