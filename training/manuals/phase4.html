@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>阶段四操作手册 - Web开发</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; position: relative; }
+        .back-link { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; padding: 8px 15px; background: rgba(255,255,255,0.2); border-radius: 25px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .manual-section { margin-bottom: 50px; }
+        .section-title { font-size: 2em; color: #667eea; margin-bottom: 30px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .subsection { margin-bottom: 30px; }
+        .subsection h3 { font-size: 1.5em; color: #555; margin-bottom: 20px; padding-left: 15px; border-left: 5px solid #667eea; }
+        .topic-block { background: #f8f9fa; padding: 25px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #667eea; }
+        .topic-block h4 { color: #667eea; margin-bottom: 15px; font-size: 1.3em; }
+        .code-block { background: #f5f5f5; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; margin: 15px 0; overflow-x: auto; border: 1px solid #ddd; }
+        .info-box { background: #e7f3ff; padding: 20px; border-radius: 10px; border-left: 5px solid #007bff; margin: 20px 0; }
+        .guide-section { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; border: 2px solid #e0e0e0; }
+        .guide-section h4 { color: #667eea; margin-bottom: 20px; font-size: 1.4em; }
+        .footer { background: #f8f9fa; padding: 30px 40px; text-align: center; border-top: 2px solid #e0e0e0; display: flex; justify-content: space-between; }
+        .footer-link { padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>阶段四操作手册</h1>
+            <div class="subtitle">Web 开发与测试技能详解</div>
+        </header>
+        <div class="content">
+            <div class="manual-section">
+                <h2 class="section-title">第一部分：深度知识点</h2>
+                <div class="subsection">
+                    <h3>1. React 组件化架构</h3>
+                    <div class="topic-block">
+                        <h4>组件设计原则</h4>
+                        <ul>
+                            <li><strong>单一职责</strong>：每个组件只做一件事</li>
+                            <li><strong>可复用性</strong>：组件应该可以在多处使用</li>
+                            <li><strong>组合性</strong>：小组件组合成大组件</li>
+                            <li><strong>可测试性</strong>：组件应该容易测试</li>
+                        </ul>
+                        <h4>Hooks 最佳实践</h4>
+                        <ul>
+                            <li>useState：简单状态管理</li>
+                            <li>useEffect：副作用和生命周期</li>
+                            <li>useContext：跨组件状态共享</li>
+                            <li>useCallback/useMemo：性能优化</li>
+                        </ul>
+                    </div>
+                    <div class="topic-block">
+                        <h4>TypeScript 类型安全</h4>
+                        <div class="code-block">
+interface User {
+    id: string;
+    name: string;
+    email: string;
+}
+
+interface Props {
+    user: User;
+    onUpdate: (user: User) => void;
+}
+
+function UserProfile({ user, onUpdate }: Props) {
+    const [editing, setEditing] = useState(false);
+    // 组件逻辑
+}
+                        </div>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>2. Playwright 测试架构</h3>
+                    <div class="topic-block">
+                        <h4>页面对象模式</h4>
+                        <p>封装页面元素的类，提供清晰的 API。</p>
+                        <div class="code-block">
+class LoginPage {
+    constructor(page: Page) {
+        this.page = page;
+        this.usernameInput = page.locator('#username');
+        this.passwordInput = page.locator('#password');
+        this.loginButton = page.locator('button[type="submit"]');
+    }
+
+    async login(username: string, password: string) {
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
+        await this.page.waitForURL('/dashboard');
+    }
+}
+
+// 使用
+test('user can login', async ({ page }) => {
+    const login = new LoginPage(page);
+    await login.goto('/');
+    await login.login('test@example.com', 'password');
+});
+                        </div>
+                    </div>
+                    <div class="topic-block">
+                        <h4>测试金字塔理论</h4>
+                        <ul>
+                            <li><strong>E2E 测试</strong>：少量，覆盖关键用户流程</li>
+                            <li><strong>集成测试</strong>：中等数量，测试组件交互</li>
+                            <li><strong>单元测试</strong>：大量，测试独立函数</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>3. 响应式设计</h3>
+                    <div class="topic-block">
+                        <h4>Flexbox 布局</h4>
+                        <div class="code-block">
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item {
+    flex: 1;
+    margin: 0 10px;
+}
+                        </div>
+                        <h4>CSS Grid 系统</h4>
+                        <div class="code-block">
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    grid-column: span 2;  /* 跨两列 */
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manual-section">
+                <h2 class="section-title">第二部分：操作指南</h2>
+                <div class="guide-section">
+                    <h4>1. React 数据可视化仪表板完整实现</h4>
+                    <ol>
+                        <li>设置项目：初始化 React + TypeScript 项目</li>
+                        <li>安装依赖：Tailwind、图表库、shadcn/ui</li>
+                        <li>设计组件结构：Dashboard、Chart、DataTable、FilterPanel</li>
+                        <li>实现组件：
+                            <ul>
+                                <li>Dashboard：主容器，布局</li>
+                                <li>Chart：数据可视化（使用 Chart.js 或 Recharts）</li>
+                                <li>DataTable：数据表格（排序、筛选、分页）</li>
+                                <li>FilterPanel：筛选控制</li>
+                            </ul>
+                        </li>
+                        <li>添加状态管理：使用 Context API 或 Redux</li>
+                        <li>实现响应式布局：移动、平板、桌面</li>
+                        <li>应用主题和样式</li>
+                        <li>添加加载状态和错误处理</li>
+                        <li>优化性能：懒加载、虚拟滚动</li>
+                    </ol>
+                    <div class="info-box">
+                        <strong>提示：</strong>使用 TypeScript 严格模式，确保所有类型正确定义。
+                    </div>
+                </div>
+
+                <div class="guide-section">
+                    <h4>2. Playwright 测试套件完整流程</h4>
+                    <ol>
+                        <li>设置测试环境：初始化 Playwright 项目</li>
+                        <li>设计测试架构：页面对象、测试工具</li>
+                        <li>编写测试用例：
+                            <ul>
+                                <li>正向测试：预期成功的操作</li>
+                                <li>负向测试：错误处理</li>
+                                <li>边界测试：极限情况</li>
+                                <li>UI 测试：视觉验证</li>
+                            </ul>
+                        </li>
+                        <li>实现页面对象：
+                            <ul>
+                                <li>为每个主要页面创建类</li>
+                                <li>封装常见元素和操作</li>
+                                <li>添加等待和断言</li>
+                            </ul>
+                        </li>
+                        <li>配置测试运行器：
+                            <ul>
+                                <li>设置超时和重试</li>
+                                <li>配置测试报告</li>
+                                <li>设置截图失败</li>
+                            </ul>
+                        </li>
+                        <li>集成 CI/CD：GitHub Actions、GitLab CI</li>
+                        <li>运行和审查结果</li>
+                    </ol>
+                </div>
+
+                <div class="guide-section">
+                    <h4>3. 响应式页面设计流程</h4>
+                    <ol>
+                        <li>设计阶段：
+                            <ul>
+                                <li>创建线框图（三种设备尺寸）</li>
+                                <li>设计高保真原型</li>
+                                <li>确定断点（移动、平板、桌面）</li>
+                            </ul>
+                        </li>
+                        <li>实现阶段：
+                            <ul>
+                                <li>使用移动优先方法</li>
+                                <li>实现 Flexbox 和 Grid 布局</li>
+                                <li>应用响应式图片和媒体</li>
+                                <li>使用相对单位（rem、%、vh/vw）</li>
+                            </ul>
+                        </li>
+                        <li>测试阶段：
+                            <ul>
+                                <li>在实际设备上测试</li>
+                                <li>使用浏览器开发工具</li>
+                                <li>检查可访问性（屏幕阅读器、键盘导航）</li>
+                            </ul>
+                        </li>
+                        <li>优化阶段：
+                            <ul>
+                                <li>压缩图片</li>
+                                <li>最小化 CSS 和 JS</li>
+                                <li>实施懒加载</li>
+                                <li>缓存策略</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <a href="phase3.html" class="footer-link">← 阶段三</a>
+            <a href="../exercises/phase4.html" class="footer-link">返回作业 →</a>
+        </footer>
+    </div>
+</body>
+</html>
